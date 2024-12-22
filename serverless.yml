@@ -1,0 +1,26 @@
+service: backend
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  environment:
+    MONGO_URI: ${env:MONGO_URI}
+    JWT_SECRET: ${env:JWT_SECRET}
+    JWT_EXPIRES_IN: ${env:JWT_EXPIRES_IN}
+
+functions:
+  signup:
+    handler: handler.signupHandler
+    events:
+      - http:
+          path: signup
+          method: post
+  login:
+    handler: handler.loginHandler
+    events:
+      - http:
+          path: login
+          method: post
+
+plugins:
+  - serverless-offline
