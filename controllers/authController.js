@@ -1,12 +1,10 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
+
 import mongoose from 'mongoose';
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect(process.env.MONGO_URI);
 
 // Helper to create JWT token
 const createToken = (id) => {

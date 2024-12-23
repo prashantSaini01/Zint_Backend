@@ -17,6 +17,15 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Password is required'],
     minlength: 6,
   },
+  role:{
+    type:String,
+    enum: ['user', 'admin'],
+    default: 'user',
+  },
+  createdAt:{
+    type:Date,
+    default:Date.now
+  },
 });
 
 // Encrypt password before saving
