@@ -115,6 +115,18 @@ functions:
             resultTtlInSeconds: 0
             identitySource: method.request.header.Cookie
 
+  getListById:
+    handler: handler.getListByIdHandler
+    events:
+      - http:
+          path: lists/{id}
+          method: get
+          cors: true
+          authorizer:
+            name: authorize
+            resultTtlInSeconds: 0
+            identitySource: method.request.header.Cookie
+
   updateList:
     handler: handler.updateListHandler
     events:

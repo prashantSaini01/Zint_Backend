@@ -1,7 +1,12 @@
 import { signup, login } from './controllers/authController.js';
 import jwt from 'jsonwebtoken';
 import { createboard,getboard,getboardbyid,updateboard,deleteboard } from './controllers/boardController.js';
+import { createlist,getlists,getlistsbyid,updatelist,deletelist } from './controllers/listController.js';
 import mongoose from 'mongoose';
+
+
+mongoose.connect(process.env.MONGO_URI);
+
 // login and Signup Functions
 export const signupHandler = async (event) => signup(event);
 export const loginHandler = async (event) => login(event);
@@ -14,9 +19,17 @@ export const updateBoardHandler = async(event) => updateboard(event);
 export const deleteBoardHandler = async(event) => deleteboard(event);
 
 
+// List Functions
+export const createListHandler = async(event) => createlist(event);
+export const getListsHandler = async(event) => getlists(event);
+export const getListByIdHandler = async(event) => getlistsbyid(event);
+export const updateListHandler = async(event) => updatelist(event);
+export const deleteListHandler = async(event) => deletelist(event);
 
-mongoose.connect(process.env.MONGO_URI);
 
+
+
+// Protected Routes Authorization Function
 export const authorize = async (event) => {
   // Extract the 'jwt' cookie value from the request headers (not Set-Cookie)
   const cookies = event.headers.Cookie;  // Request headers (Cookie header)
