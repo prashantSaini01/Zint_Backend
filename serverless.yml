@@ -175,6 +175,17 @@ functions:
             name: authorize
             resultTtlInSeconds: 0
             identitySource: method.request.header.Cookie
+  getCardById:
+    handler: handler.getCardByIdHandler
+    events:
+      - http:
+          path: cards/{id}
+          method: get
+          cors: true
+          authorizer:
+            name: authorize
+            resultTtlInSeconds: 0
+            identitySource: method.request.header.Cookie
 
   updateCard:
     handler: handler.updateCardHandler
