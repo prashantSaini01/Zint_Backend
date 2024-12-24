@@ -78,9 +78,6 @@ export const authorize = async (event) => {
             Resource: event.methodArn,
           },
         ],
-      },
-      context: {
-        role: "admin"
       }
     };
   } catch (err) {
