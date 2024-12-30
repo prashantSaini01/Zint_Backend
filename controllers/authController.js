@@ -30,7 +30,7 @@ export const signup = async (event) => {
 
     const token = createToken(user._id);
     return {
-      statusCode: 201,
+      statusCode: 200,
       headers: {
         'Set-Cookie': `jwt=${token}; HttpOnly; Path=/; Secure`,
       },
