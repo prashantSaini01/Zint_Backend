@@ -11,8 +11,6 @@ provider:
 functions:
 
   # Public APIs
-
-  # User-related APIs
   signup:
     handler: handler.signupHandler
     events:
@@ -25,6 +23,13 @@ functions:
     events:
       - http:
           path: login
+          method: post
+
+  logout:
+    handler: handler.logoutHandler
+    events:
+      - http:
+          path: logout
           method: post
 
   # Protected APIs
@@ -175,6 +180,7 @@ functions:
             name: authorize
             resultTtlInSeconds: 0
             identitySource: method.request.header.Cookie
+
   getCardById:
     handler: handler.getCardByIdHandler
     events:

@@ -1,4 +1,4 @@
-import { signup, login } from './controllers/authController.js';
+import { signup, login,logout } from './controllers/authController.js';
 import jwt from 'jsonwebtoken';
 import { createboard,getboard,getboardbyid,updateboard,deleteboard } from './controllers/boardController.js';
 import { createlist,getlists,getlistsbyid,updatelist,deletelist } from './controllers/listController.js';
@@ -11,6 +11,7 @@ mongoose.connect(process.env.MONGO_URI);
 // login and Signup Functions
 export const signupHandler = async (event) => signup(event);
 export const loginHandler = async (event) => login(event);
+export const logoutHandler = async (event) => logout(event);
 
 // Board Functions
 export const createBoardHandler = async(event) => createboard(event); 

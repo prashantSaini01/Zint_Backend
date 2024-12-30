@@ -72,3 +72,24 @@ export const login = async (event) => {
     };
   }
 };
+
+
+
+// Logout Function
+export const logout = async (event) => {
+  try {
+    return {
+      statusCode: 200,
+      headers: {
+        'Set-Cookie': 'jwt=; HttpOnly; Path=/; Secure; Expires=Thu, 01 Jan 1970 00:00:00 GMT',
+      },
+      body: JSON.stringify({ message: 'Logout successful' }),
+    };
+  } catch (error) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ message: error.message }),
+    };
+  }
+};
+
