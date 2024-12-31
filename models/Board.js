@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
-const boardSchema = new mongoose.Schema({
+const boardSchema = new mongoose.Schema(
+  {
     title: {
       type: String,
       required: [true, 'Board title is required'],
@@ -20,12 +21,12 @@ const boardSchema = new mongoose.Schema({
         ref: 'User',
       },
     ],
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
-  });
+  },
+  {
+    timestamps: true, // Automatically adds createdAt and updatedAt fields
+  }
+);
 
-  const Board = mongoose.model('Board', boardSchema);
+const Board = mongoose.model('Board', boardSchema);
 
-  export default Board;
+export default Board;

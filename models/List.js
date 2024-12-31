@@ -13,14 +13,6 @@ const listSchema = new mongoose.Schema(
       ref: 'Board', // Reference to the Board model
       required: [true, 'Board ID is required'],
     },
-    createdAt: {
-      type: Date,
-      default: Date.now, // Automatically sets the creation date
-    },
-    updatedAt: {
-      type: Date,
-      default: Date.now,
-    },
   },
   {
     timestamps: true, // Automatically adds createdAt and updatedAt fields

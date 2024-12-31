@@ -1,9 +1,22 @@
-import Board from '../models/Board.js';
-import List from '../models/List.js'; 
-import Card from '../models/Card.js';
 import mongoose from 'mongoose';
+import Board from '../models/Board.js';
+import List from '../models/List.js';
+import Card from '../models/Card.js';
 
-mongoose.connect(process.env.MONGO_URI);
+// Connect to MongoDB with async/await
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log('MongoDB connected');
+  } catch (error) {
+    console.error('MongoDB connection error:', error.message);
+    process.exit(1); // Exit process if the connection fails
+  }
+};
+connectDB();
 
 // Create Card Function
 export const createcard = async (event) => {
@@ -18,8 +31,7 @@ export const createcard = async (event) => {
       };
     }
 
-    // Check if the list exists
-    const list = await List.findById(listId).populate('boardId'); // Populate the board reference
+    const list = await List.findById(listId).populate('boardId');
     if (!list) {
       return {
         statusCode: 404,
@@ -27,8 +39,7 @@ export const createcard = async (event) => {
       };
     }
 
-    // Ensure the list has an associated board
-    const boardId = list.boardId._id;
+    const boardId = list.boardId?._id;
     if (!boardId) {
       return {
         statusCode: 400,
@@ -36,14 +47,7 @@ export const createcard = async (event) => {
       };
     }
 
-    // Create the new card
-    const newCard = new Card({
-      title,
-      description,
-      list: listId,
-      board: boardId,
-    });
-
+    const newCard = new Card({ title, description, list: listId, board: boardId });
     await newCard.save();
 
     return {
@@ -60,31 +64,18 @@ export const createcard = async (event) => {
 };
 
 // Get all Cards Function
-
 export const getcards = async (event) => {
   try {
     const { listId } = event.pathParameters;
 
-    if (!listId) {
+    if (!listId || !mongoose.Types.ObjectId.isValid(listId)) {
       return {
         statusCode: 400,
-        body: JSON.stringify({ message: 'List ID is required' }),
+        body: JSON.stringify({ message: 'Invalid or missing List ID' }),
       };
     }
 
-    // Validate and convert listId to ObjectId
-    if (!mongoose.Types.ObjectId.isValid(listId)) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ message: 'Invalid List ID' }),
-      };
-    }
-
-    const objectId = new mongoose.Types.ObjectId(listId);
-
-    // Fetch cards associated with the list
-    const cards = await Card.find({ list: objectId });
-
+    const cards = await Card.find({ list: listId });
     if (cards.length === 0) {
       return {
         statusCode: 404,
@@ -105,21 +96,19 @@ export const getcards = async (event) => {
   }
 };
 
-
-
-
-
-
-
-
-// Get Card By Id Function
-export const getcardbyid= async (event) => {
+// Get Card By ID Function
+export const getcardbyid = async (event) => {
   try {
     const { id } = event.pathParameters;
 
-    // Fetch the card by ID
-    const card = await Card.findById(id);
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: 'Invalid Card ID' }),
+      };
+    }
 
+    const card = await Card.findById(id);
     if (!card) {
       return {
         statusCode: 404,
@@ -140,16 +129,20 @@ export const getcardbyid= async (event) => {
   }
 };
 
-
 // Update Card Function
 export const updatecard = async (event) => {
   try {
     const { id } = event.pathParameters;
     const { title, description } = JSON.parse(event.body);
 
-    // Find the card by ID
-    const card = await Card.findById(id);
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: 'Invalid Card ID' }),
+      };
+    }
 
+    const card = await Card.findById(id);
     if (!card) {
       return {
         statusCode: 404,
@@ -157,11 +150,9 @@ export const updatecard = async (event) => {
       };
     }
 
-    // Update the card's title and description
     card.title = title || card.title;
     card.description = description || card.description;
 
-    // Save the updated card
     await card.save();
 
     return {
@@ -177,20 +168,11 @@ export const updatecard = async (event) => {
   }
 };
 
-
-// delete Card Function
+// Delete Card Function
 export const deletecard = async (event) => {
   try {
     const { id } = event.pathParameters;
 
-    if (!id) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ message: 'Card ID is required' }),
-      };
-    }
-
-    // Validate ID format
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return {
         statusCode: 400,
@@ -198,9 +180,7 @@ export const deletecard = async (event) => {
       };
     }
 
-    // Find and delete the card by ID
     const deletedCard = await Card.findByIdAndDelete(id);
-
     if (!deletedCard) {
       return {
         statusCode: 404,
