@@ -1,12 +1,24 @@
 import Board from "../models/Board.js";
 import mongoose from 'mongoose';
 
-mongoose.connect(process.env.MONGO_URI);
+// Connect to MongoDB with async/await
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log('MongoDB connected');
+  } catch (error) {
+    console.error('MongoDB connection error:', error.message);
+    process.exit(1); // Exit process if the connection fails
+  }
+};
+connectDB();
 
 // Create Board Function
-export const createboard  = async (event) => {
+export const createboard = async (event) => {
   try {
-    // Parse the request body
     const { title, description } = JSON.parse(event.body);
 
     if (!title || !description) {
@@ -16,14 +28,12 @@ export const createboard  = async (event) => {
       };
     }
 
-    // Create a new board
     const newBoard = new Board({
       title,
       description,
-      owner: event.requestContext.authorizer.principalId, // Get the user ID from the token
+      owner: event.requestContext.authorizer.principalId, // User ID from token
     });
 
-    // Save the board to the database
     await newBoard.save();
 
     return {
@@ -39,16 +49,10 @@ export const createboard  = async (event) => {
   }
 };
 
-
-
-
 // Get Boards Function
-
 export const getboard = async (event) => {
   try {
-    const userId = event.requestContext.authorizer.principalId; // Get the user ID from the token
-
-    // Fetch the boards created by the current user
+    const userId = event.requestContext.authorizer.principalId; // User ID from token
     const boards = await Board.find({ owner: userId });
 
     return {
@@ -64,15 +68,10 @@ export const getboard = async (event) => {
   }
 };
 
-
 // Get Board By ID Function
-
-
 export const getboardbyid = async (event) => {
   try {
     const { id } = event.pathParameters;
-
-    // Fetch the board by its ID
     const board = await Board.findById(id);
 
     if (!board) {
@@ -95,15 +94,12 @@ export const getboardbyid = async (event) => {
   }
 };
 
-
-// Upadte Board Function
-
+// Update Board Function
 export const updateboard = async (event) => {
   try {
     const { id } = event.pathParameters;
     const { title, description } = JSON.parse(event.body);
 
-    // Find the board by ID
     const board = await Board.findById(id);
 
     if (!board) {
@@ -113,7 +109,6 @@ export const updateboard = async (event) => {
       };
     }
 
-    // Ensure the user is the creator of the board
     if (board.owner.toString() !== event.requestContext.authorizer.principalId) {
       return {
         statusCode: 403,
@@ -121,11 +116,9 @@ export const updateboard = async (event) => {
       };
     }
 
-    // Update the board
     board.title = title || board.title;
     board.description = description || board.description;
 
-    // Save the updated board
     await board.save();
 
     return {
@@ -141,14 +134,11 @@ export const updateboard = async (event) => {
   }
 };
 
-
 // Delete Board Function
-
 export const deleteboard = async (event) => {
   try {
     const { id } = event.pathParameters;
 
-    // Find the board by ID
     const board = await Board.findById(id);
 
     if (!board) {
@@ -158,7 +148,6 @@ export const deleteboard = async (event) => {
       };
     }
 
-    // Ensure the user is the creator of the board
     if (board.owner.toString() !== event.requestContext.authorizer.principalId) {
       return {
         statusCode: 403,
@@ -166,7 +155,6 @@ export const deleteboard = async (event) => {
       };
     }
 
-    // Delete the board using findByIdAndDelete
     await Board.findByIdAndDelete(id);
 
     return {
