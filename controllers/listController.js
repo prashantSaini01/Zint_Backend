@@ -19,17 +19,15 @@ connectDB();
 
 
 
-// Create List Function
-
 export const createlist = async (event) => {
   try {
-    const { boardId } = event.pathParameters
-    const { title} = JSON.parse(event.body);
+    const { boardId } = event.pathParameters;
+    const { title, order } = JSON.parse(event.body);
 
-    if (!boardId || !title) {
+    if (!boardId || !title || order === undefined) {
       return {
         statusCode: 400,
-        body: JSON.stringify({ message: 'Board ID and Title are required' }),
+        body: JSON.stringify({ message: 'Board ID, Title, and Order are required' }),
       };
     }
 
@@ -53,6 +51,7 @@ export const createlist = async (event) => {
     const newList = new List({
       title,
       boardId,
+      order,  // Set the order of the list
     });
 
     await newList.save();
@@ -179,6 +178,51 @@ export const deletelist = async (event) => {
     };
   } catch (error) {
     console.error('Error deleting list:', error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ message: 'Internal Server Error' }),
+    };
+  }
+};
+
+// Update List Order Function
+export const updateListOrder = async (event) => {
+  try {
+    const { boardId } = event.pathParameters;
+    const { listIds } = JSON.parse(event.body);
+
+    if (!listIds || listIds.length === 0) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: 'List IDs are required' }),
+      };
+    }
+
+    // Find the board to make sure it exists
+    const board = await Board.findById(boardId);
+    if (!board) {
+      return {
+        statusCode: 404,
+        body: JSON.stringify({ message: 'Board not found' }),
+      };
+    }
+
+    // Update the lists order in the board
+    const updatePromises = listIds.map((id, index) => {
+      return List.updateOne(
+        { _id: id }, 
+        { $set: { order: index } }  // Set the order based on the index in the listIds array
+      );
+    });
+
+    await Promise.all(updatePromises); // Ensure all updates are completed
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: 'List order updated successfully' }),
+    };
+  } catch (error) {
+    console.error('Error updating list order:', error);
     return {
       statusCode: 500,
       body: JSON.stringify({ message: 'Internal Server Error' }),

@@ -13,6 +13,11 @@ const listSchema = new mongoose.Schema(
       ref: 'Board', // Reference to the Board model
       required: [true, 'Board ID is required'],
     },
+    order:{
+      type:Number,
+      default:0,
+      required: true,
+    }
   },
   {
     timestamps: true, // Automatically adds createdAt and updatedAt fields

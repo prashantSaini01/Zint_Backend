@@ -18,16 +18,15 @@ const connectDB = async () => {
 };
 connectDB();
 
-// Create Card Function
 export const createcard = async (event) => {
   try {
     const { listId } = event.pathParameters;
-    const { title, description } = JSON.parse(event.body);
+    const { title, description, position } = JSON.parse(event.body);
 
-    if (!title || !listId) {
+    if (!title || !listId || position === undefined) {
       return {
         statusCode: 400,
-        body: JSON.stringify({ message: 'Title and List ID are required' }),
+        body: JSON.stringify({ message: 'Title, List ID, and Position are required' }),
       };
     }
 
@@ -47,7 +46,13 @@ export const createcard = async (event) => {
       };
     }
 
-    const newCard = new Card({ title, description, list: listId, board: boardId });
+    const newCard = new Card({
+      title,
+      description,
+      list: listId,
+      board: boardId,
+      position,  // Set the position of the card
+    });
     await newCard.save();
 
     return {
@@ -129,11 +134,10 @@ export const getcardbyid = async (event) => {
   }
 };
 
-// Update Card Function
 export const updatecard = async (event) => {
   try {
     const { id } = event.pathParameters;
-    const { title, description } = JSON.parse(event.body);
+    const { title, description, listId, position } = JSON.parse(event.body);
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return {
@@ -150,6 +154,39 @@ export const updatecard = async (event) => {
       };
     }
 
+    if (listId && listId !== card.list.toString()) {
+      // Handle moving the card to a new list
+      if (!mongoose.Types.ObjectId.isValid(listId)) {
+        return {
+          statusCode: 400,
+          body: JSON.stringify({ message: 'Invalid List ID' }),
+        };
+      }
+
+      const newList = await List.findById(listId);
+      if (!newList) {
+        return {
+          statusCode: 404,
+          body: JSON.stringify({ message: 'New list not found' }),
+        };
+      }
+
+      // Remove card from current list
+      await List.findByIdAndUpdate(card.list, { $pull: { cards: card._id } });
+
+      // Ensure newList.cards is an array before using splice
+      if (!Array.isArray(newList.cards)) {
+        newList.cards = []; // Initialize if undefined
+      }
+
+      // Add card to new list at the specified position
+      newList.cards.splice(position || 0, 0, card._id); // Insert at the specified position
+      await newList.save();
+
+      card.list = listId; // Update card's list ID
+    }
+
+    // Update other card details
     card.title = title || card.title;
     card.description = description || card.description;
 
@@ -200,3 +237,5 @@ export const deletecard = async (event) => {
     };
   }
 };
+
+

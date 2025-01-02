@@ -155,6 +155,18 @@ functions:
             name: authorize
             resultTtlInSeconds: 0
             identitySource: method.request.header.Cookie
+  updateListOrder:
+    handler: handler.updateListOrderHandler
+    events:
+    - http:
+        path: boards/{boardId}/lists/order
+        method: put
+        cors: true
+        authorizer:
+            name: authorize
+            resultTtlInSeconds: 0
+            identitySource: method.request.header.Cookie
+        
 
   # Card APIs
   createCard:

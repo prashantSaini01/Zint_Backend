@@ -34,6 +34,10 @@ const cardSchema = new mongoose.Schema(
         type: String,
       },
     ],
+    position:{
+      type:Number,
+      required: true,
+    }
   },
   {
     timestamps: true, // Automatically adds createdAt and updatedAt fields
