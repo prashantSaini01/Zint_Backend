@@ -9,7 +9,6 @@ provider:
     JWT_EXPIRES_IN: ${env:JWT_EXPIRES_IN}
 
 functions:
-
   # Public APIs
   signup:
     handler: handler.signupHandler
@@ -95,6 +94,42 @@ functions:
             resultTtlInSeconds: 0
             identitySource: method.request.header.Cookie
 
+  addCollaborator:
+    handler: handler.addCollaboratorHandler
+    events:
+      - http:
+          path: boards/{id}/collaborator
+          method: post
+          cors: true
+          authorizer:
+            name: authorize
+            resultTtlInSeconds: 0
+            identitySource: method.request.header.Cookie
+
+  removeCollaborator:
+    handler: handler.removeCollaboratorHandler
+    events:
+      - http:
+          path: boards/{id}/collaborator
+          method: delete
+          cors: true
+          authorizer:
+            name: authorize
+            resultTtlInSeconds: 0
+            identitySource: method.request.header.Cookie
+
+  getCollaborators:
+    handler: handler.getCollaboratorsHandlers
+    events:
+      - http:
+          path: boards/{id}/collaborators
+          method: get
+          cors: true
+          authorizer:
+            name: authorize
+            resultTtlInSeconds: 0
+            identitySource: method.request.header.Cookie
+
   # List APIs
   createList:
     handler: handler.createListHandler
@@ -155,18 +190,18 @@ functions:
             name: authorize
             resultTtlInSeconds: 0
             identitySource: method.request.header.Cookie
+
   updateListOrder:
     handler: handler.updateListOrderHandler
     events:
-    - http:
-        path: boards/{boardId}/lists/order
-        method: put
-        cors: true
-        authorizer:
+      - http:
+          path: boards/{boardId}/lists/order
+          method: put
+          cors: true
+          authorizer:
             name: authorize
             resultTtlInSeconds: 0
             identitySource: method.request.header.Cookie
-        
 
   # Card APIs
   createCard:

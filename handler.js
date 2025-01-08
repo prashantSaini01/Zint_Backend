@@ -1,6 +1,6 @@
 import { signup, login,logout } from './controllers/authController.js';
 import jwt from 'jsonwebtoken';
-import { createboard,getboard,getboardbyid,updateboard,deleteboard } from './controllers/boardController.js';
+import { createboard,getboard,getboardbyid,updateboard,deleteboard ,getCollaborators,addCollaborator,removeCollaborator} from './controllers/boardController.js';
 import { createlist,getlists,getlistsbyid,updatelist,deletelist,updateListOrder } from './controllers/listController.js';
 import { createcard,getcards,getcardbyid,updatecard,deletecard } from './controllers/cardController.js';
 import mongoose from 'mongoose';
@@ -19,6 +19,9 @@ export const getBoardsHandler = async(event) => getboard(event);
 export const getBoardByIdHandler = async(event) => getboardbyid(event);
 export const updateBoardHandler = async(event) => updateboard(event);
 export const deleteBoardHandler = async(event) => deleteboard(event);
+export const addCollaboratorHandler = async(event) => addCollaborator(event);
+export const removeCollaboratorHandler = async(event) => removeCollaborator(event);
+export const getCollaboratorsHandlers = async(event) => getCollaborators(event);
 
 
 // List Functions

@@ -169,3 +169,125 @@ export const deleteboard = async (event) => {
     };
   }
 };
+
+
+
+// Add Collaborator to Board
+export const addCollaborator = async (event) => {
+  try {
+    const { id } = event.pathParameters; // Board ID from URL
+    const { userId } = JSON.parse(event.body); // User ID to add as collaborator
+
+    // Find the board by ID
+    const board = await Board.findById(id);
+
+    if (!board) {
+      return {
+        statusCode: 404,
+        body: JSON.stringify({ message: 'Board not found' }),
+      };
+    }
+
+    // Check if the requester is the owner of the board
+    if (board.owner.toString() !== event.requestContext.authorizer.principalId) {
+      return {
+        statusCode: 403,
+        body: JSON.stringify({ message: 'You are not authorized to add collaborators' }),
+      };
+    }
+
+    // Check if the user is already a collaborator
+    if (board.collaborators.includes(userId)) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: 'User is already a collaborator' }),
+      };
+    }
+
+    // Add the collaborator to the board
+    board.collaborators.push(userId);
+    await board.save();
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: 'Collaborator added successfully', board }),
+    };
+  } catch (error) {
+    console.error('Error adding collaborator:', error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ message: 'Internal Server Error' }),
+    };
+  }
+};
+
+
+// Remove Collaborator from Board
+export const removeCollaborator = async (event) => {
+  try {
+    const { id } = event.pathParameters; // Board ID from URL
+    const { userId } = JSON.parse(event.body); // User ID to remove from collaborators
+
+    // Find the board by ID
+    const board = await Board.findById(id);
+
+    if (!board) {
+      return {
+        statusCode: 404,
+        body: JSON.stringify({ message: 'Board not found' }),
+      };
+    }
+
+    // Check if the requester is the owner of the board
+    if (board.owner.toString() !== event.requestContext.authorizer.principalId) {
+      return {
+        statusCode: 403,
+        body: JSON.stringify({ message: 'You are not authorized to remove collaborators' }),
+      };
+    }
+
+    // Remove the collaborator from the board
+    board.collaborators.pull(userId);
+    await board.save();
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: 'Collaborator removed successfully', board }),
+    };
+  } catch (error) {
+    console.error('Error removing collaborator:', error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ message: 'Internal Server Error' }),
+    };
+  }
+};
+
+
+// Get Collaborators of a Board
+export const getCollaborators = async (event) => {
+  try {
+    const { id } = event.pathParameters; // Board ID from URL
+
+    // Find the board and populate the collaborators
+    const board = await Board.findById(id).populate('collaborators');
+
+    if (!board) {
+      return {
+        statusCode: 404,
+        body: JSON.stringify({ message: 'Board not found' }),
+      };
+    }
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ collaborators: board.collaborators }),
+    };
+  } catch (error) {
+    console.error('Error fetching collaborators:', error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ message: 'Internal Server Error' }),
+    };
+  }
+};
