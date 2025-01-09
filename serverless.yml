@@ -98,7 +98,7 @@ functions:
     handler: handler.addCollaboratorHandler
     events:
       - http:
-          path: boards/{id}/collaborator
+          path: boards/{boardId}/collaborators
           method: post
           cors: true
           authorizer:
@@ -110,7 +110,7 @@ functions:
     handler: handler.removeCollaboratorHandler
     events:
       - http:
-          path: boards/{id}/collaborator
+          path: boards/{boardId}/collaborators
           method: delete
           cors: true
           authorizer:
@@ -122,7 +122,7 @@ functions:
     handler: handler.getCollaboratorsHandlers
     events:
       - http:
-          path: boards/{id}/collaborators
+          path: boards/{boardId}/collaborators
           method: get
           cors: true
           authorizer:
