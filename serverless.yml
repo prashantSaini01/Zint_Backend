@@ -94,11 +94,12 @@ functions:
             resultTtlInSeconds: 0
             identitySource: method.request.header.Cookie
 
-  addCollaborator:
-    handler: handler.addCollaboratorHandler
+  # Invite APIs
+  createInvite:
+    handler: handler.createInviteHandler
     events:
       - http:
-          path: boards/{boardId}/collaborators
+          path: boards/{boardId}/invites
           method: post
           cors: true
           authorizer:
@@ -106,11 +107,35 @@ functions:
             resultTtlInSeconds: 0
             identitySource: method.request.header.Cookie
 
-  removeCollaborator:
-    handler: handler.removeCollaboratorHandler
+  getBoardInvites:
+    handler: handler.getBoardInvitesHandler
     events:
       - http:
-          path: boards/{boardId}/collaborators
+          path: boards/{boardId}/invites
+          method: get
+          cors: true
+          authorizer:
+            name: authorize
+            resultTtlInSeconds: 0
+            identitySource: method.request.header.Cookie
+
+  acceptInvite:
+    handler: handler.acceptInviteHandler
+    events:
+      - http:
+          path: invites/{token}/accept
+          method: post
+          cors: true
+          authorizer:
+            name: authorize
+            resultTtlInSeconds: 0
+            identitySource: method.request.header.Cookie
+
+  deleteInvite:
+    handler: handler.deleteInviteHandler
+    events:
+      - http:
+          path: boards/{boardId}/invites/{inviteId}
           method: delete
           cors: true
           authorizer:
@@ -118,17 +143,7 @@ functions:
             resultTtlInSeconds: 0
             identitySource: method.request.header.Cookie
 
-  getCollaborators:
-    handler: handler.getCollaboratorsHandlers
-    events:
-      - http:
-          path: boards/{boardId}/collaborators
-          method: get
-          cors: true
-          authorizer:
-            name: authorize
-            resultTtlInSeconds: 0
-            identitySource: method.request.header.Cookie
+ 
 
   # List APIs
   createList:
