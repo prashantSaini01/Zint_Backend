@@ -49,15 +49,73 @@ export const createboard = async (event) => {
   }
 };
 
-// Get Boards Function
+// // Get Boards Function
+// export const getboard = async (event) => {
+//   try {
+//     const userId = event.requestContext.authorizer.principalId; // User ID from token
+//     const boards = await Board.find({ owner: userId });
+
+//     return {
+//       statusCode: 200,
+//       body: JSON.stringify({ boards }),
+//     };
+//   } catch (error) {
+//     console.error('Error fetching boards:', error);
+//     return {
+//       statusCode: 500,
+//       body: JSON.stringify({ message: 'Internal Server Error' }),
+//     };
+//   }
+// };
+
+
+
+// export const getboard = async (event) => {
+//   try {
+//     const userId = event.requestContext.authorizer.principalId; // User ID from token
+//     const boards = await Board.find({
+//       $or: [
+//         { owner: userId }, 
+//         { collaborators: userId } // Include boards where the user is a collaborator
+//       ]
+//     });
+
+//     return {
+//       statusCode: 200,
+//       body: JSON.stringify({ boards }),
+//     };
+//   } catch (error) {
+//     console.error('Error fetching boards:', error);
+//     return {
+//       statusCode: 500,
+//       body: JSON.stringify({ message: 'Internal Server Error' }),
+//     };
+//   }
+// };
+
+
 export const getboard = async (event) => {
   try {
     const userId = event.requestContext.authorizer.principalId; // User ID from token
-    const boards = await Board.find({ owner: userId });
+    const boards = await Board.find({
+      $or: [
+        { owner: userId },
+        { collaborators: userId } // Include boards where the user is a collaborator
+      ]
+    });
+
+    // Add the `isOwner` flag to each board
+    boards.forEach((board) => {
+      board.isOwner = String(board.owner) === userId; // Check if the current user is the owner
+    });
+
+    // Separate boards into my boards and shared boards
+    const myBoards = boards.filter((board) => board.isOwner);
+    const sharedBoards = boards.filter((board) => !board.isOwner);
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ boards }),
+      body: JSON.stringify({ myBoards, sharedBoards }), // Return both myBoards and sharedBoards
     };
   } catch (error) {
     console.error('Error fetching boards:', error);
@@ -67,6 +125,7 @@ export const getboard = async (event) => {
     };
   }
 };
+
 
 // Get Board By ID Function
 export const getboardbyid = async (event) => {

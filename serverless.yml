@@ -30,6 +30,13 @@ functions:
       - http:
           path: logout
           method: post
+  validateInvite:
+    handler: handler.validateInviteHandler
+    events:
+      - http:
+          path: invites/{token}/validate
+          method: get
+          cors: true
 
   # Protected APIs
 
@@ -104,7 +111,7 @@ functions:
           cors: true
           authorizer:
             name: authorize
-            resultTtlInSeconds: 0
+            resultTtlInSeconds: 3600
             identitySource: method.request.header.Cookie
 
   getBoardInvites:
