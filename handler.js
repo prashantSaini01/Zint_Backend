@@ -2,7 +2,7 @@ import { signup, login,logout } from './controllers/authController.js';
 import jwt from 'jsonwebtoken';
 import { createboard,getboard,getboardbyid,updateboard,deleteboard} from './controllers/boardController.js';
 import { createlist,getlists,getlistsbyid,updatelist,deletelist,updateListOrder } from './controllers/listController.js';
-import { createcard,getcards,getcardbyid,updatecard,deletecard } from './controllers/cardController.js';
+import { createcard,getcards,getcardbyid,updatecard,deletecard,updateCardOrder } from './controllers/cardController.js';
 import mongoose from 'mongoose';
 import {getBoardInvites,acceptInvite,deleteInvite,createInvite,validateInvite} from './controllers/inviteHandlers.js'
 
@@ -37,7 +37,7 @@ export const getCardsHandler = async(event) => getcards(event);
 export const getCardByIdHandler = async(event) => getcardbyid(event);
 export const updateCardHandler = async(event) => updatecard(event);
 export const deleteCardHandler = async(event) => deletecard(event);
-
+export const updateCardOrderHandler = async(event) => updateCardOrder(event);
 
 // Invite Functions
 export const getBoardInvitesHandler = async(event) => getBoardInvites(event);

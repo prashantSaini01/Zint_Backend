@@ -586,6 +586,17 @@ functions:
             name: authorize
             resultTtlInSeconds: 0
             identitySource: method.request.header.Cookie
+  updateCardOrder:
+    handler: handler.updateCardOrderHandler
+    events:
+      - http:
+          path: lists/{listId}/cards/order
+          method: put
+          cors: true
+          authorizer:
+            name: authorize
+            resultTtlInSeconds: 0
+            identitySource: method.request.header.Cookie
 
   # Authorization function to validate JWT
   authorize:

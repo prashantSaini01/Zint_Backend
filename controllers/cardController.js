@@ -239,3 +239,70 @@ export const deletecard = async (event) => {
 };
 
 
+// Add this to your card controllers file
+
+export const updateCardOrder = async (event) => {
+  try {
+    const { listId } = event.pathParameters;
+    const { cardOrders } = JSON.parse(event.body);
+
+    if (!mongoose.Types.ObjectId.isValid(listId)) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: 'Invalid List ID' }),
+      };
+    }
+
+    // Validate cardOrders array
+    if (!Array.isArray(cardOrders)) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: 'cardOrders must be an array' }),
+      };
+    }
+
+    // Validate each card belongs to the list
+    const cards = await Card.find({ list: listId });
+    const cardIds = cards.map(card => card._id.toString());
+    
+    const validCards = cardOrders.every(order => 
+      cardIds.includes(order.cardId) && 
+      typeof order.position === 'number'
+    );
+
+    if (!validCards) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: 'Invalid card IDs or positions' }),
+      };
+    }
+
+    // Update all card positions
+    const updatePromises = cardOrders.map(({ cardId, position }) => 
+      Card.findByIdAndUpdate(
+        cardId,
+        { position },
+        { new: true }
+      )
+    );
+
+    await Promise.all(updatePromises);
+
+    // Fetch updated cards
+    const updatedCards = await Card.find({ list: listId }).sort('position');
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        message: 'Card positions updated successfully',
+        cards: updatedCards
+      }),
+    };
+  } catch (error) {
+    console.error('Error updating card positions:', error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ message: 'Internal Server Error' }),
+    };
+  }
+};
