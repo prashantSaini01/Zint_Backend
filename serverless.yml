@@ -1,3 +1,302 @@
+# service: backend
+
+# provider:
+#   name: aws
+#   runtime: nodejs18.x
+#   environment:
+#     MONGO_URI: ${env:MONGO_URI}
+#     JWT_SECRET: ${env:JWT_SECRET}
+#     JWT_EXPIRES_IN: ${env:JWT_EXPIRES_IN}
+
+# functions:
+#   # Public APIs
+#   signup:
+#     handler: handler.signupHandler
+#     events:
+#       - http:
+#           path: signup
+#           method: post
+
+#   login:
+#     handler: handler.loginHandler
+#     events:
+#       - http:
+#           path: login
+#           method: post
+
+#   logout:
+#     handler: handler.logoutHandler
+#     events:
+#       - http:
+#           path: logout
+#           method: post
+#   validateInvite:
+#     handler: handler.validateInviteHandler
+#     events:
+#       - http:
+#           path: invites/{token}/validate
+#           method: get
+#           cors: true
+
+#   # Protected APIs
+
+#   # Board APIs
+#   createBoard:
+#     handler: handler.createBoardHandler
+#     events:
+#       - http:
+#           path: boards
+#           method: post
+#           cors: true
+#           authorizer:
+#             name: authorize
+#             resultTtlInSeconds: 0
+#             identitySource: method.request.header.Cookie
+
+#   getBoards:
+#     handler: handler.getBoardsHandler
+#     events:
+#       - http:
+#           path: boards
+#           method: get
+#           cors: true
+#           authorizer:
+#             name: authorize
+#             resultTtlInSeconds: 0
+#             identitySource: method.request.header.Cookie
+
+#   getBoardById:
+#     handler: handler.getBoardByIdHandler
+#     events:
+#       - http:
+#           path: boards/{id}
+#           method: get
+#           cors: true
+#           authorizer:
+#             name: authorize
+#             resultTtlInSeconds: 0
+#             identitySource: method.request.header.Cookie
+
+#   updateBoard:
+#     handler: handler.updateBoardHandler
+#     events:
+#       - http:
+#           path: boards/{id}
+#           method: put
+#           cors: true
+#           authorizer:
+#             name: authorize
+#             resultTtlInSeconds: 0
+#             identitySource: method.request.header.Cookie
+
+#   deleteBoard:
+#     handler: handler.deleteBoardHandler
+#     events:
+#       - http:
+#           path: boards/{id}
+#           method: delete
+#           cors: true
+#           authorizer:
+#             name: authorize
+#             resultTtlInSeconds: 0
+#             identitySource: method.request.header.Cookie
+
+#   # Invite APIs
+#   createInvite:
+#     handler: handler.createInviteHandler
+#     events:
+#       - http:
+#           path: boards/{boardId}/invites
+#           method: post
+#           cors: true
+#           authorizer:
+#             name: authorize
+#             resultTtlInSeconds: 3600
+#             identitySource: method.request.header.Cookie
+
+#   getBoardInvites:
+#     handler: handler.getBoardInvitesHandler
+#     events:
+#       - http:
+#           path: boards/{boardId}/invites
+#           method: get
+#           cors: true
+#           authorizer:
+#             name: authorize
+#             resultTtlInSeconds: 0
+#             identitySource: method.request.header.Cookie
+
+#   acceptInvite:
+#     handler: handler.acceptInviteHandler
+#     events:
+#       - http:
+#           path: invites/{token}/accept
+#           method: post
+#           cors: true
+#           authorizer:
+#             name: authorize
+#             resultTtlInSeconds: 0
+#             identitySource: method.request.header.Cookie
+
+#   deleteInvite:
+#     handler: handler.deleteInviteHandler
+#     events:
+#       - http:
+#           path: boards/{boardId}/invites/{inviteId}
+#           method: delete
+#           cors: true
+#           authorizer:
+#             name: authorize
+#             resultTtlInSeconds: 0
+#             identitySource: method.request.header.Cookie
+
+ 
+
+#   # List APIs
+#   createList:
+#     handler: handler.createListHandler
+#     events:
+#       - http:
+#           path: boards/{boardId}/lists
+#           method: post
+#           cors: true
+#           authorizer:
+#             name: authorize
+#             resultTtlInSeconds: 0
+#             identitySource: method.request.header.Cookie
+
+#   getLists:
+#     handler: handler.getListsHandler
+#     events:
+#       - http:
+#           path: boards/{boardId}/lists
+#           method: get
+#           cors: true
+#           authorizer:
+#             name: authorize
+#             resultTtlInSeconds: 0
+#             identitySource: method.request.header.Cookie
+
+#   getListById:
+#     handler: handler.getListByIdHandler
+#     events:
+#       - http:
+#           path: lists/{id}
+#           method: get
+#           cors: true
+#           authorizer:
+#             name: authorize
+#             resultTtlInSeconds: 0
+#             identitySource: method.request.header.Cookie
+
+#   updateList:
+#     handler: handler.updateListHandler
+#     events:
+#       - http:
+#           path: lists/{id}
+#           method: put
+#           cors: true
+#           authorizer:
+#             name: authorize
+#             resultTtlInSeconds: 0
+#             identitySource: method.request.header.Cookie
+
+#   deleteList:
+#     handler: handler.deleteListHandler
+#     events:
+#       - http:
+#           path: lists/{id}
+#           method: delete
+#           cors: true
+#           authorizer:
+#             name: authorize
+#             resultTtlInSeconds: 0
+#             identitySource: method.request.header.Cookie
+
+#   updateListOrder:
+#     handler: handler.updateListOrderHandler
+#     events:
+#       - http:
+#           path: boards/{boardId}/lists/order
+#           method: put
+#           cors: true
+#           authorizer:
+#             name: authorize
+#             resultTtlInSeconds: 0
+#             identitySource: method.request.header.Cookie
+
+#   # Card APIs
+#   createCard:
+#     handler: handler.createCardHandler
+#     events:
+#       - http:
+#           path: lists/{listId}/cards
+#           method: post
+#           cors: true
+#           authorizer:
+#             name: authorize
+#             resultTtlInSeconds: 0
+#             identitySource: method.request.header.Cookie
+
+#   getCards:
+#     handler: handler.getCardsHandler
+#     events:
+#       - http:
+#           path: lists/{listId}/cards
+#           method: get
+#           cors: true
+#           authorizer:
+#             name: authorize
+#             resultTtlInSeconds: 0
+#             identitySource: method.request.header.Cookie
+
+#   getCardById:
+#     handler: handler.getCardByIdHandler
+#     events:
+#       - http:
+#           path: cards/{id}
+#           method: get
+#           cors: true
+#           authorizer:
+#             name: authorize
+#             resultTtlInSeconds: 0
+#             identitySource: method.request.header.Cookie
+
+#   updateCard:
+#     handler: handler.updateCardHandler
+#     events:
+#       - http:
+#           path: cards/{id}
+#           method: put
+#           cors: true
+#           authorizer:
+#             name: authorize
+#             resultTtlInSeconds: 0
+#             identitySource: method.request.header.Cookie
+
+#   deleteCard:
+#     handler: handler.deleteCardHandler
+#     events:
+#       - http:
+#           path: cards/{id}
+#           method: delete
+#           cors: true
+#           authorizer:
+#             name: authorize
+#             resultTtlInSeconds: 0
+#             identitySource: method.request.header.Cookie
+
+#   # Authorization function to validate JWT
+#   authorize:
+#     handler: handler.authorize
+
+# plugins:
+#   - serverless-offline
+
+
+
+
+
 service: backend
 
 provider:
@@ -7,6 +306,7 @@ provider:
     MONGO_URI: ${env:MONGO_URI}
     JWT_SECRET: ${env:JWT_SECRET}
     JWT_EXPIRES_IN: ${env:JWT_EXPIRES_IN}
+  timeout: 900 # Global timeout setting
 
 functions:
   # Public APIs
@@ -16,6 +316,7 @@ functions:
       - http:
           path: signup
           method: post
+          cors: true
 
   login:
     handler: handler.loginHandler
@@ -23,6 +324,7 @@ functions:
       - http:
           path: login
           method: post
+          cors: true
 
   logout:
     handler: handler.logoutHandler
@@ -30,6 +332,8 @@ functions:
       - http:
           path: logout
           method: post
+          cors: true
+
   validateInvite:
     handler: handler.validateInviteHandler
     events:
@@ -39,7 +343,6 @@ functions:
           cors: true
 
   # Protected APIs
-
   # Board APIs
   createBoard:
     handler: handler.createBoardHandler
@@ -111,7 +414,7 @@ functions:
           cors: true
           authorizer:
             name: authorize
-            resultTtlInSeconds: 3600
+            resultTtlInSeconds: 0
             identitySource: method.request.header.Cookie
 
   getBoardInvites:
@@ -149,8 +452,6 @@ functions:
             name: authorize
             resultTtlInSeconds: 0
             identitySource: method.request.header.Cookie
-
- 
 
   # List APIs
   createList:

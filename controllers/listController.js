@@ -40,12 +40,12 @@ export const createlist = async (event) => {
       };
     }
 
-    if (board.owner.toString() !== event.requestContext.authorizer.principalId) {
-      return {
-        statusCode: 403,
-        body: JSON.stringify({ message: 'You are not authorized to add lists to this board' }),
-      };
-    }
+    // if (board.owner.toString() !== event.requestContext.authorizer.principalId) {
+    //   return {
+    //     statusCode: 403,
+    //     body: JSON.stringify({ message: 'You are not authorized to add lists to this board' }),
+    //   };
+    // }
 
     // Create the new list
     const newList = new List({
