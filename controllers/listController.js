@@ -2,23 +2,6 @@ import Board from '../models/Board.js';
 import List from '../models/List.js'; 
 import mongoose from 'mongoose';
 
-// Connect to MongoDB with async/await
-const connectDB = async () => {
-  try {
-    await mongoose.connect(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log('MongoDB connected');
-  } catch (error) {
-    console.error('MongoDB connection error:', error.message);
-    process.exit(1); // Exit process if the connection fails
-  }
-};
-connectDB();
-
-
-
 export const createlist = async (event) => {
   try {
     const { boardId } = event.pathParameters;
