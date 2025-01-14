@@ -1,11 +1,12 @@
-import { signup, login,logout } from './controllers/authController.js';
+// handler.js
+import { signup, login, logout } from './controllers/authController.js';
 import jwt from 'jsonwebtoken';
-import { createboard,getboard,getboardbyid,updateboard,deleteboard} from './controllers/boardController.js';
-import { createlist,getlists,getlistsbyid,updatelist,deletelist,updateListOrder } from './controllers/listController.js';
-import { createcard,getcards,getcardbyid,updatecard,deletecard,updateCardOrder } from './controllers/cardController.js';
+import { createboard, getboard, getboardbyid, updateboard, deleteboard } from './controllers/boardController.js';
+import { createlist, getlists, getlistsbyid, updatelist, deletelist, updateListOrder } from './controllers/listController.js';
+import { createcard, getcards, getcardbyid, updatecard, deletecard, updateCardOrder } from './controllers/cardController.js';
 import mongoose from 'mongoose';
-import {getBoardInvites,acceptInvite,deleteInvite,createInvite,validateInvite} from './controllers/inviteHandlers.js'
-
+import { getBoardInvites, acceptInvite, deleteInvite, createInvite, validateInvite,rejectInvite} from './controllers/inviteHandlers.js';
+import { checkUser } from './controllers/check.js';
 
 // mongoose.connect(process.env.MONGO_URI);
 const connectDB = async () => {
@@ -28,37 +29,38 @@ export const loginHandler = async (event) => login(event);
 export const logoutHandler = async (event) => logout(event);
 
 // Board Functions
-export const createBoardHandler = async(event) => createboard(event); 
-export const getBoardsHandler = async(event) => getboard(event);
-export const getBoardByIdHandler = async(event) => getboardbyid(event);
-export const updateBoardHandler = async(event) => updateboard(event);
-export const deleteBoardHandler = async(event) => deleteboard(event);
-
+export const createBoardHandler = async (event) => createboard(event);
+export const getBoardsHandler = async (event) => getboard(event);
+export const getBoardByIdHandler = async (event) => getboardbyid(event);
+export const updateBoardHandler = async (event) => updateboard(event);
+export const deleteBoardHandler = async (event) => deleteboard(event);
 
 // List Functions
-export const createListHandler = async(event) => createlist(event);
-export const getListsHandler = async(event) => getlists(event);
-export const getListByIdHandler = async(event) => getlistsbyid(event);
-export const updateListHandler = async(event) => updatelist(event);
-export const deleteListHandler = async(event) => deletelist(event);
-export const updateListOrderHandler = async(event) => updateListOrder(event);
-
+export const createListHandler = async (event) => createlist(event);
+export const getListsHandler = async (event) => getlists(event);
+export const getListByIdHandler = async (event) => getlistsbyid(event);
+export const updateListHandler = async (event) => updatelist(event);
+export const deleteListHandler = async (event) => deletelist(event);
+export const updateListOrderHandler = async (event) => updateListOrder(event);
 
 // Card Functions
-export const createCardHandler = async(event) => createcard(event);
-export const getCardsHandler = async(event) => getcards(event);
-export const getCardByIdHandler = async(event) => getcardbyid(event);
-export const updateCardHandler = async(event) => updatecard(event);
-export const deleteCardHandler = async(event) => deletecard(event);
-export const updateCardOrderHandler = async(event) => updateCardOrder(event);
+export const createCardHandler = async (event) => createcard(event);
+export const getCardsHandler = async (event) => getcards(event);
+export const getCardByIdHandler = async (event) => getcardbyid(event);
+export const updateCardHandler = async (event) => updatecard(event);
+export const deleteCardHandler = async (event) => deletecard(event);
+export const updateCardOrderHandler = async (event) => updateCardOrder(event);
 
 // Invite Functions
-export const getBoardInvitesHandler = async(event) => getBoardInvites(event);
-export const acceptInviteHandler = async(event) => acceptInvite(event);
-export const deleteInviteHandler = async(event) => deleteInvite(event);
-export const createInviteHandler = async(event) => createInvite(event);
-export const validateInviteHandler = async(event) => validateInvite(event);
+export const getBoardInvitesHandler = async (event) => getBoardInvites(event);
+export const acceptInviteHandler = async (event) => acceptInvite(event);
+export const deleteInviteHandler = async (event) => deleteInvite(event);
+export const createInviteHandler = async (event) => createInvite(event);
+export const validateInviteHandler = async (event) => validateInvite(event);
+export const rejectInviteHandler = async (event) => rejectInvite(event);
 
+// Check Functions
+export const checkUserHandler = async (event) => checkUser(event); // Ensure this is exported
 
 // Protected Routes Authorization Function
 export const authorize = async (event) => {
@@ -87,7 +89,6 @@ export const authorize = async (event) => {
   try {
     // Verify the JWT token
     const decoded = jwt.verify(jwtToken, process.env.JWT_SECRET);
- 
 
     // Return IAM policy allowing access to the requested resource
     return {
@@ -107,8 +108,7 @@ export const authorize = async (event) => {
     // If JWT is invalid or expired, deny access
     return {
       statusCode: 403,
-      body: JSON.stringify({ message: 'Forbidden: Invalid or expired JWT token' ,decoded}),
+      body: JSON.stringify({ message: 'Forbidden: Invalid or expired JWT token' }),
     };
   }
 };
-

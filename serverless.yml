@@ -342,6 +342,14 @@ functions:
           method: get
           cors: true
 
+  checkUser:
+    handler: handler.checkUserHandler
+    events:
+      - http:
+          path: users/check
+          method: get
+          cors: true
+
   # Protected APIs
   # Board APIs
   createBoard:
@@ -436,10 +444,18 @@ functions:
           path: invites/{token}/accept
           method: post
           cors: true
-          authorizer:
-            name: authorize
-            resultTtlInSeconds: 0
-            identitySource: method.request.header.Cookie
+          # authorizer:
+          #   name: authorize
+          #   resultTtlInSeconds: 0
+          #   identitySource: method.request.header.Cookie
+  rejectInvite:
+    handler: handler.rejectInviteHandler
+    events:
+      - http:
+        path: invites/{token}/reject
+        method: post
+        cors: true
+
 
   deleteInvite:
     handler: handler.deleteInviteHandler
