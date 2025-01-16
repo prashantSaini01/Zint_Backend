@@ -88,76 +88,7 @@ export const getcards = async (event) => {
   }
 };
 
-// Get Card By ID Function
-// export const getcardbyid = async (event) => {
-//   try {
-//     const { id } = event.pathParameters;
 
-//     if (!mongoose.Types.ObjectId.isValid(id)) {
-//       return {
-//         statusCode: 400,
-//         body: JSON.stringify({ message: 'Invalid Card ID' }),
-//       };
-//     }
-
-//     const card = await Card.findById(id);
-//     if (!card) {
-//       return {
-//         statusCode: 404,
-//         body: JSON.stringify({ message: 'Card not found' }),
-//       };
-//     }
-
-//     return {
-//       statusCode: 200,
-//       body: JSON.stringify({ card }),
-//     };
-//   } catch (error) {
-//     console.error('Error fetching card:', error);
-//     return {
-//       statusCode: 500,
-//       body: JSON.stringify({ message: 'Internal Server Error' }),
-//     };
-//   }
-// };
-
-
-// export const getcardbyid = async (event) => {
-//   try {
-//     const { id } = event.pathParameters;
-
-//     if (!mongoose.Types.ObjectId.isValid(id)) {
-//       return {
-//         statusCode: 400,
-//         body: JSON.stringify({ message: 'Invalid Card ID' }),
-//       };
-//     }
-
-//     // Populate the assignedUsers field with user details
-//     const card = await Card.findById(id).populate({
-//       path: 'assignedUsers',
-//       select: 'email', // Only fetch the email field from the User model
-//     });
-
-//     if (!card) {
-//       return {
-//         statusCode: 404,
-//         body: JSON.stringify({ message: 'Card not found' }),
-//       };
-//     }
-
-//     return {
-//       statusCode: 200,
-//       body: JSON.stringify({ card }),
-//     };
-//   } catch (error) {
-//     console.error('Error fetching card:', error);
-//     return {
-//       statusCode: 500,
-//       body: JSON.stringify({ message: 'Internal Server Error' }),
-//     };
-//   }
-// };
 
 
 export const getcardbyid = async (event) => {
@@ -213,10 +144,12 @@ export const getcardbyid = async (event) => {
 
 
 
+
+
 // export const updatecard = async (event) => {
 //   try {
 //     const { id } = event.pathParameters;
-//     const { title, description, listId, position } = JSON.parse(event.body);
+//     const { title, description, listId, position, assignedUsers } = JSON.parse(event.body);
 
 //     if (!mongoose.Types.ObjectId.isValid(id)) {
 //       return {
@@ -233,8 +166,18 @@ export const getcardbyid = async (event) => {
 //       };
 //     }
 
+//     // Fetch User IDs from emails
+//     const userObjectIds = [];
+//     if (assignedUsers && Array.isArray(assignedUsers)) {
+//       for (const email of assignedUsers) {
+//         const user = await User.findOne({ email });
+//         if (user) {
+//           userObjectIds.push(user._id); // Add the user's ObjectId
+//         }
+//       }
+//     }
+
 //     if (listId && listId !== card.list.toString()) {
-//       // Handle moving the card to a new list
 //       if (!mongoose.Types.ObjectId.isValid(listId)) {
 //         return {
 //           statusCode: 400,
@@ -250,24 +193,22 @@ export const getcardbyid = async (event) => {
 //         };
 //       }
 
-//       // Remove card from current list
 //       await List.findByIdAndUpdate(card.list, { $pull: { cards: card._id } });
 
-//       // Ensure newList.cards is an array before using splice
 //       if (!Array.isArray(newList.cards)) {
-//         newList.cards = []; // Initialize if undefined
+//         newList.cards = [];
 //       }
 
-//       // Add card to new list at the specified position
-//       newList.cards.splice(position || 0, 0, card._id); // Insert at the specified position
+//       newList.cards.splice(position || 0, 0, card._id);
 //       await newList.save();
 
-//       card.list = listId; // Update card's list ID
+//       card.list = listId;
 //     }
 
-//     // Update other card details
+//     // Update card fields
 //     card.title = title || card.title;
 //     card.description = description || card.description;
+//     card.assignedUsers = userObjectIds; // Use the fetched ObjectIds
 
 //     await card.save();
 
@@ -288,7 +229,7 @@ export const getcardbyid = async (event) => {
 export const updatecard = async (event) => {
   try {
     const { id } = event.pathParameters;
-    const { title, description, listId, position, assignedUsers } = JSON.parse(event.body);
+    const { title, description, listId, position, assignedUsers, subtasks } = JSON.parse(event.body);
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return {
@@ -311,7 +252,7 @@ export const updatecard = async (event) => {
       for (const email of assignedUsers) {
         const user = await User.findOne({ email });
         if (user) {
-          userObjectIds.push(user._id); // Add the user's ObjectId
+          userObjectIds.push(user._id);
         }
       }
     }
@@ -347,7 +288,16 @@ export const updatecard = async (event) => {
     // Update card fields
     card.title = title || card.title;
     card.description = description || card.description;
-    card.assignedUsers = userObjectIds; // Use the fetched ObjectIds
+    card.assignedUsers = userObjectIds;
+
+    // Update subtasks
+    if (subtasks && Array.isArray(subtasks)) {
+      card.subtasks = subtasks.map(subtask => ({
+        title: subtask.title,
+        assignedTo: subtask.assignedTo,
+        completed: subtask.completed || false,
+      }));
+    }
 
     await card.save();
 
@@ -363,7 +313,6 @@ export const updatecard = async (event) => {
     };
   }
 };
-
 
 
 
@@ -469,6 +418,4 @@ export const updateCardOrder = async (event) => {
     };
   }
 };
-
-
 
