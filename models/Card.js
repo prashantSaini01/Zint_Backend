@@ -88,6 +88,9 @@ const cardSchema = new mongoose.Schema(
           type: Boolean,
           default: false,
         },
+        dueDate: {
+          type: Date,
+        },
       },
     ],
     dueDate: {
