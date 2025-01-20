@@ -294,6 +294,7 @@ export const updatecard = async (event) => {
     if (subtasks && Array.isArray(subtasks)) {
       card.subtasks = subtasks.map(subtask => ({
         title: subtask.title,
+        dueDate: subtask.dueDate,
         assignedTo: subtask.assignedTo,
         completed: subtask.completed || false,
       }));
