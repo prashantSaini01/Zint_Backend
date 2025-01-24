@@ -8,6 +8,15 @@ import mongoose from 'mongoose';
 import { getBoardInvites, acceptInvite, deleteInvite, createInvite, validateInvite,rejectInvite} from './controllers/inviteHandlers.js';
 import { checkUser } from './controllers/check.js';
 import { getTemplates,createTemplate,updateTemplate,getTemplateById,deleteTemplate } from './controllers/templateController.js';
+import { 
+  createScheduledCard, 
+  cancelScheduledCard, 
+  getScheduledCards, 
+  scheduleCardCreation 
+} from './controllers/schedulerController.js';
+
+
+scheduleCardCreation(); // Start the scheduler when the server starts
 
 // mongoose.connect(process.env.MONGO_URI);
 const connectDB = async () => {
@@ -67,6 +76,11 @@ export const getTemplateByIdHandler = async (event) => getTemplateById(event);
 export const updateTemplateHandler = async (event) => updateTemplate(event);
 export const deleteTemplateHandler = async (event) => deleteTemplate(event);
 
+
+// Schedule Card Functions
+export const createScheduleCardHandler = async (event) => createScheduledCard(event);
+export const cancelScheduledCardHandler = async (event) => cancelScheduledCard(event);
+export const getScheduleCardsHandler = async (event) => getScheduledCards(event);
 
 // Check Functions
 export const checkUserHandler = async (event) => checkUser(event); // Ensure this is exported

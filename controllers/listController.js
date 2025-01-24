@@ -1,6 +1,5 @@
 import Board from '../models/Board.js';
 import List from '../models/List.js'; 
-import mongoose from 'mongoose';
 
 export const createlist = async (event) => {
   try {

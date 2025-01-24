@@ -380,6 +380,39 @@ functions:
             name: authorize
             resultTtlInSeconds: 0
             identitySource: method.request.header.Cookie
+  createScheduleCard:
+    handler: handler.createScheduleCardHandler
+    events:
+      - http:
+          path: schedule
+          method: post
+          cors: true
+          authorizer:
+            name: authorize
+            resultTtlInSeconds: 0
+            identitySource: method.request.header.Cookie
+  cancelScheduleCard:
+    handler: handler.cancelScheduleCardHandler
+    events:
+      - http:
+          path: schedule/{id}
+          method: delete
+          cors: true
+          authorizer:
+            name: authorize
+            resultTtlInSeconds: 0
+            identitySource: method.request.header.Cookie
+  getScheduleCards:
+    handler: handler.getScheduleCardsHandler
+    events:
+      - http:
+          path: schedule
+          method: get
+          cors: true
+          authorizer:
+            name: authorize
+            resultTtlInSeconds: 0
+            identitySource: method.request.header.Cookie
 
   # Authorization function to validate JWT
   authorize:

@@ -24,7 +24,7 @@ export const createTemplate = async (event) => {
   try {
     // Parse the event body
     const body = JSON.parse(event.body);
-    const { name, description, subtasks, frequency, frequencyDetails } = body;
+    const { name, description, subtasks, frequency, frequencyDetails,boardId } = body;
 
     if (!name) {
       return {
@@ -39,6 +39,7 @@ export const createTemplate = async (event) => {
       frequency: frequency || 'none',
       frequencyDetails: frequencyDetails || null,
       subtasks: subtasks || [],
+      boardId: boardId || null,
     });
 
     await newTemplate.save();
