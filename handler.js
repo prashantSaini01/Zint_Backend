@@ -7,15 +7,12 @@ import { createcard, getcards, getcardbyid, updatecard, deletecard, updateCardOr
 import mongoose from 'mongoose';
 import { getBoardInvites, acceptInvite, deleteInvite, createInvite, validateInvite,rejectInvite} from './controllers/inviteHandlers.js';
 import { checkUser } from './controllers/check.js';
-
+import { getTemplates,createTemplate,updateTemplate,getTemplateById,deleteTemplate } from './controllers/templateController.js';
 
 // mongoose.connect(process.env.MONGO_URI);
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await mongoose.connect(process.env.MONGO_URI);
     console.log('MongoDB connected');
   } catch (error) {
     console.error('MongoDB connection error:', error.message);
@@ -62,12 +59,21 @@ export const createInviteHandler = async (event) => createInvite(event);
 export const validateInviteHandler = async (event) => validateInvite(event);
 export const rejectInviteHandler = async (event) => rejectInvite(event);
 
+
+// Templates Functions
+export const createTemplateHandler = async (event) => createTemplate(event);
+export const getTemplatesHandler = async (event) => getTemplates(event);
+export const getTemplateByIdHandler = async (event) => getTemplateById(event);
+export const updateTemplateHandler = async (event) => updateTemplate(event);
+export const deleteTemplateHandler = async (event) => deleteTemplate(event);
+
+
 // Check Functions
 export const checkUserHandler = async (event) => checkUser(event); // Ensure this is exported
 
 
 // Helper Function
-export const helperHandler = async (event) => helper(event);
+// export const helperHandler = async (event) => helper(event);
 
 // Protected Routes Authorization Function
 export const authorize = async (event) => {

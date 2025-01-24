@@ -1,5 +1,5 @@
 import Board from "../models/Board.js";
-import mongoose from 'mongoose';
+
 
 // Create Board Function
 export const createboard = async (event) => {
@@ -33,50 +33,6 @@ export const createboard = async (event) => {
     };
   }
 };
-
-// // Get Boards Function
-// export const getboard = async (event) => {
-//   try {
-//     const userId = event.requestContext.authorizer.principalId; // User ID from token
-//     const boards = await Board.find({ owner: userId });
-
-//     return {
-//       statusCode: 200,
-//       body: JSON.stringify({ boards }),
-//     };
-//   } catch (error) {
-//     console.error('Error fetching boards:', error);
-//     return {
-//       statusCode: 500,
-//       body: JSON.stringify({ message: 'Internal Server Error' }),
-//     };
-//   }
-// };
-
-
-
-// export const getboard = async (event) => {
-//   try {
-//     const userId = event.requestContext.authorizer.principalId; // User ID from token
-//     const boards = await Board.find({
-//       $or: [
-//         { owner: userId }, 
-//         { collaborators: userId } // Include boards where the user is a collaborator
-//       ]
-//     });
-
-//     return {
-//       statusCode: 200,
-//       body: JSON.stringify({ boards }),
-//     };
-//   } catch (error) {
-//     console.error('Error fetching boards:', error);
-//     return {
-//       statusCode: 500,
-//       body: JSON.stringify({ message: 'Internal Server Error' }),
-//     };
-//   }
-// };
 
 
 export const getboard = async (event) => {

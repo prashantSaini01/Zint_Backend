@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
-import mongoose from 'mongoose';
+
 
 
 // Helper to create JWT token

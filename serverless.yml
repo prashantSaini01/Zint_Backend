@@ -320,6 +320,67 @@ functions:
             resultTtlInSeconds: 0
             identitySource: method.request.header.Cookie
 
+  # Template APIs
+  getTemplates:
+    handler: handler.getTemplatesHandler
+    events:
+      - http:
+          path: templates
+          method: get
+          cors: true
+          authorizer:
+            name: authorize
+            resultTtlInSeconds: 0
+            identitySource: method.request.header.Cookie
+
+  createTemplate:
+    handler: handler.createTemplateHandler
+    events:
+      - http:
+          path: template
+          method: post
+          cors: true
+          authorizer:
+            name: authorize
+            resultTtlInSeconds: 0
+            identitySource: method.request.header.Cookie
+
+  deleteTemplate:
+    handler: handler.deleteTemplateHandler
+    events:
+      - http:
+          path: template/{id}
+          method: delete
+          cors: true
+          authorizer:
+            name: authorize
+            resultTtlInSeconds: 0
+            identitySource: method.request.header.Cookie
+
+  updateTemplate:
+    handler: handler.updateTemplateHandler
+    events:
+      - http:
+          path: template/{id}
+          method: put
+          cors: true
+          authorizer:
+            name: authorize
+            resultTtlInSeconds: 0
+            identitySource: method.request.header.Cookie
+
+  getTemplateById:
+    handler: handler.getTemplateByIdHandler
+    events:
+      - http:
+          path: template/{id}
+          method: get
+          cors: true
+          authorizer:
+            name: authorize
+            resultTtlInSeconds: 0
+            identitySource: method.request.header.Cookie
+
   # Authorization function to validate JWT
   authorize:
     handler: handler.authorize
