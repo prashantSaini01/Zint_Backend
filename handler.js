@@ -10,13 +10,13 @@ import { checkUser } from './controllers/check.js';
 import { getTemplates,createTemplate,updateTemplate,getTemplateById,deleteTemplate } from './controllers/templateController.js';
 import { 
   createScheduledCard, 
-  cancelScheduledCard, 
   getScheduledCards, 
-  scheduleCardCreation 
+  startScheduler
 } from './controllers/schedulerController.js';
+import { cancelScheduledCard } from './controllers/schedulerController.js';
 
 
-scheduleCardCreation(); // Start the scheduler when the server starts
+startScheduler(); // Start the scheduler when the server starts
 
 // mongoose.connect(process.env.MONGO_URI);
 const connectDB = async () => {

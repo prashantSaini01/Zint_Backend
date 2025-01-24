@@ -14,11 +14,11 @@ const formatDate = () => {
 };
 
 const dateSuffix = formatDate();
-
-// Create a scheduled card
 export const createScheduledCard = async (event) => {
   try {
-    const { templateId, cardTitle, boardId, listId } = event.body;
+    const { templateId, cardTitle, boardId, listId } = JSON.parse(event.body);
+
+    console.log("Received data:", { templateId, cardTitle, boardId, listId }); // Debugging
 
     // Find the template to get frequency details
     const template = await Template.findById(templateId);
@@ -41,6 +41,8 @@ export const createScheduledCard = async (event) => {
 
     await scheduledCard.save();
 
+    console.log("Scheduled card saved:", scheduledCard); // Debugging
+
     return {
       statusCode: 201,
       body: JSON.stringify({
@@ -49,6 +51,7 @@ export const createScheduledCard = async (event) => {
       })
     };
   } catch (error) {
+    console.error('Error creating scheduled card:', error); // Debugging
     return {
       statusCode: 500,
       body: JSON.stringify({
@@ -60,7 +63,7 @@ export const createScheduledCard = async (event) => {
 };
 
 // Scheduler function
-export const scheduleCardCreation = async () => {
+const scheduleCardCreation = async () => {
   const scheduledCards = await ScheduledCard.find({
     status: 'active'
   }).populate('templateId');
@@ -99,7 +102,7 @@ export const scheduleCardCreation = async () => {
     }
 
     cronExpressions.forEach((cronExpression) => {
-      Cron(cronExpression, async () => {
+      new Cron(cronExpression, async () => {
         try {
           // Create a new card based on the scheduled card details
           
@@ -116,7 +119,7 @@ export const scheduleCardCreation = async () => {
           await newCard.save();
           console.log(`Card created from scheduled card: ${scheduledCard.cardTitle}`);
         } catch (error) {
-          console.error('Error creating scheduled card:', error);
+          console.error('Yaha Error ha', error);
         }
       });
     });
@@ -127,6 +130,7 @@ export const scheduleCardCreation = async () => {
 export const getScheduledCards = async (event) => {
   try {
     const scheduledCards = await ScheduledCard.find().populate('templateId');
+   
 
     return {
       statusCode: 200,
@@ -136,6 +140,7 @@ export const getScheduledCards = async (event) => {
           id: card._id,
           cardTitle: card.cardTitle,
           boardId: card.boardId,
+          boardName: card.boardId ? card.boardId.title : 'N/A', // Add board name
           listId: card.listId,
           status: card.status,
           frequency: card.frequency,
@@ -189,4 +194,9 @@ export const cancelScheduledCard = async (event) => {
       })
     };
   }
+};
+
+export const startScheduler = () => {
+  console.log("Starting scheduler...");
+  scheduleCardCreation();
 };
