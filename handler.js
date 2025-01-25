@@ -13,7 +13,8 @@ import {
   getScheduledCards, 
   startScheduler
 } from './controllers/schedulerController.js';
-import { cancelScheduledCard } from './controllers/schedulerController.js';
+
+import { cancelScheduledCard} from './controllers/schedulerController.js';
 
 
 startScheduler(); // Start the scheduler when the server starts
@@ -79,7 +80,7 @@ export const deleteTemplateHandler = async (event) => deleteTemplate(event);
 
 // Schedule Card Functions
 export const createScheduleCardHandler = async (event) => createScheduledCard(event);
-export const cancelScheduledCardHandler = async (event) => cancelScheduledCard(event);
+export const cancelScheduleCardHandler = async (event) => cancelScheduledCard(event);
 export const getScheduleCardsHandler = async (event) => getScheduledCards(event);
 
 // Check Functions

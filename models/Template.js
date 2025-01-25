@@ -13,7 +13,7 @@ const templateSchema = new mongoose.Schema(
     },
     frequency: {
       type: String,
-      enum: ['weekly', 'biweekly', 'monthly', 'quarterly', 'fortnightly', 'yearly', 'none'],
+      enum:['every2minutes','weekly', 'biweekly', 'monthly', 'quarterly', 'fortnightly', 'yearly', 'none'],
       default: 'none', // Default to no frequency
     },
     frequencyDetails: {

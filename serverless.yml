@@ -380,6 +380,7 @@ functions:
             name: authorize
             resultTtlInSeconds: 0
             identitySource: method.request.header.Cookie
+            
   createScheduleCard:
     handler: handler.createScheduleCardHandler
     events:
@@ -402,6 +403,7 @@ functions:
             name: authorize
             resultTtlInSeconds: 0
             identitySource: method.request.header.Cookie
+
   getScheduleCards:
     handler: handler.getScheduleCardsHandler
     events:

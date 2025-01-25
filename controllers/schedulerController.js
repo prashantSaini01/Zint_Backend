@@ -64,15 +64,18 @@ export const createScheduledCard = async (event) => {
 
 // Scheduler function
 const scheduleCardCreation = async () => {
-  const scheduledCards = await ScheduledCard.find({
-    status: 'active'
-  }).populate('templateId');
+  const scheduledCards = await ScheduledCard.find({ status: 'active' })
+  .populate('templateId')
+  .populate('boardId');
 
   scheduledCards.forEach((scheduledCard) => {
     const { frequency, frequencyDetails } = scheduledCard;
     let cronExpressions = [];
 
     switch (frequency) {
+      case 'every2minutes':
+        cronExpressions.push('*/2 * * * *');
+        break;
       case 'weekly':
         cronExpressions.push(`0 9 * * ${frequencyDetails.day || 1}`);
         break;
@@ -129,8 +132,11 @@ const scheduleCardCreation = async () => {
 // Get all scheduled cards
 export const getScheduledCards = async (event) => {
   try {
-    const scheduledCards = await ScheduledCard.find().populate('templateId');
-   
+    // const scheduledCards = await ScheduledCard.find().populate('templateId');
+    const scheduledCards = await ScheduledCard.find({ status: 'active' })
+    .populate('templateId')
+    .populate('boardId')
+    .populate('listId');
 
     return {
       statusCode: 200,
@@ -140,7 +146,9 @@ export const getScheduledCards = async (event) => {
           id: card._id,
           cardTitle: card.cardTitle,
           boardId: card.boardId,
-          boardName: card.boardId ? card.boardId.title : 'N/A', // Add board name
+          // boardName: card.boardId ? card.boardId.title : 'AAA', // Add board name
+          boardName: card.boardId && card.boardId.title ? card.boardId.title : 'Unknown Board',
+          listName: card.listId ? card.listId.title : 'Unknown List',
           listId: card.listId,
           status: card.status,
           frequency: card.frequency,
@@ -164,6 +172,8 @@ export const getScheduledCards = async (event) => {
 export const cancelScheduledCard = async (event) => {
   try {
     const { id } = event.pathParameters;
+    console.log("Cancelling scheduled card with ID:", id); // Add logging
+
 
     const scheduledCard = await ScheduledCard.findByIdAndUpdate(
       id,
