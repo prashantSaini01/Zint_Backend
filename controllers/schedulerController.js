@@ -1,6 +1,5 @@
 import ScheduledCard from '../models/Schedule.js';
 import Template from '../models/Template.js';
-import Board from '../models/Board.js';
 import Card from '../models/Card.js';
 import {Cron} from 'croner';
 
@@ -78,6 +77,7 @@ const scheduleCardCreation = async () => {
         break;
       case 'weekly':
         cronExpressions.push(`0 9 * * ${frequencyDetails.day || 1}`);
+        // cronExpressions.push('*/1 * * * *');
         break;
       case 'biweekly':
         if (frequencyDetails.day1 && frequencyDetails.day2) {
@@ -114,8 +114,8 @@ const scheduleCardCreation = async () => {
             title: `${scheduledCard.cardTitle} - ${dateSuffix}`,
             description: scheduledCard.templateId.description,
             subtasks: scheduledCard.templateId.subtasks,
-            listId: scheduledCard.listId,
-            boardId: scheduledCard.boardId,
+            list: scheduledCard.listId,
+            board: scheduledCard.boardId,
             position: 0
           });
 

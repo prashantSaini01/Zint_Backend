@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer';
-import User from '../models/User.js';
+
 
 // Create reusable transporter object using Gmail SMTP
 const transporter = nodemailer.createTransport({
