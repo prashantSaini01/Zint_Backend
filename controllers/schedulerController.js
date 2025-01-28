@@ -60,8 +60,6 @@ export const createScheduledCard = async (event) => {
     };
   }
 };
-
-// Scheduler function
 const scheduleCardCreation = async () => {
   const scheduledCards = await ScheduledCard.find({ status: 'active' })
   .populate('templateId')
@@ -72,12 +70,11 @@ const scheduleCardCreation = async () => {
     let cronExpressions = [];
 
     switch (frequency) {
-      case 'every2minutes':
-        cronExpressions.push('*/2 * * * *');
-        break;
+      // case 'every2minutes':
+      //   cronExpressions.push('*/2 * * * *');
+      //   break;
       case 'weekly':
         cronExpressions.push(`0 9 * * ${frequencyDetails.day || 1}`);
-        // cronExpressions.push('*/1 * * * *');
         break;
       case 'biweekly':
         if (frequencyDetails.day1 && frequencyDetails.day2) {
@@ -89,10 +86,14 @@ const scheduleCardCreation = async () => {
         cronExpressions.push(`0 9 ${frequencyDetails.date || 1} * *`);
         break;
       case 'quarterly':
-        cronExpressions.push(`0 9 ${frequencyDetails.date || 1} */3 *`);
+        cronExpressions.push(`0 9 ${frequencyDetails.date || 1} ${frequencyDetails.month || 1} *`);
         break;
       case 'fortnightly':
-        cronExpressions.push(`0 9 */14 * *`);
+        if (frequencyDetails.days) {
+          frequencyDetails.days.forEach(day => {
+            cronExpressions.push(`0 9 */14 * * ${day}`);
+          });
+        }
         break;
       case 'yearly':
         if (frequencyDetails.date) {
@@ -108,8 +109,6 @@ const scheduleCardCreation = async () => {
       new Cron(cronExpression, async () => {
         try {
           // Create a new card based on the scheduled card details
-          
-  
           const newCard = new Card({
             title: `${scheduledCard.cardTitle} - ${dateSuffix}`,
             description: scheduledCard.templateId.description,
@@ -122,7 +121,7 @@ const scheduleCardCreation = async () => {
           await newCard.save();
           console.log(`Card created from scheduled card: ${scheduledCard.cardTitle}`);
         } catch (error) {
-          console.error('Yaha Error ha', error);
+          console.error('Error Creating Schedule', error);
         }
       });
     });
