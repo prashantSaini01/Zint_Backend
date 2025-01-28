@@ -7,6 +7,9 @@ provider:
     MONGO_URI: ${env:MONGO_URI}
     JWT_SECRET: ${env:JWT_SECRET}
     JWT_EXPIRES_IN: ${env:JWT_EXPIRES_IN}
+    EMAIL_USER: ${env:EMAIL_USER}
+    EMAIL_PASS: ${env:EMAIL_PASS}
+
   timeout: 900 # Global timeout setting
 
 functions:
