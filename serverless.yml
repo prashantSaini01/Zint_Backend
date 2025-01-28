@@ -118,7 +118,7 @@ functions:
     handler: handler.createInviteHandler
     events:
       - http:
-          path: boards/{boardId}/invites
+          path: boards/{id}/invites
           method: post
           cors: true
           authorizer:
@@ -130,7 +130,7 @@ functions:
     handler: handler.getBoardInvitesHandler
     events:
       - http:
-          path: boards/{boardId}/invites
+          path: boards/{id}/invites
           method: get
           cors: true
           authorizer:
@@ -166,7 +166,7 @@ functions:
     handler: handler.deleteInviteHandler
     events:
       - http:
-          path: boards/{boardId}/invites/{inviteId}
+          path: boards/{id}/invites/{inviteId}
           method: delete
           cors: true
           authorizer:
@@ -179,7 +179,7 @@ functions:
     handler: handler.createListHandler
     events:
       - http:
-          path: boards/{boardId}/lists
+          path: boards/{id}/lists
           method: post
           cors: true
           authorizer:
@@ -191,7 +191,7 @@ functions:
     handler: handler.getListsHandler
     events:
       - http:
-          path: boards/{boardId}/lists
+          path: boards/{id}/lists
           method: get
           cors: true
           authorizer:
@@ -239,7 +239,7 @@ functions:
     handler: handler.updateListOrderHandler
     events:
       - http:
-          path: boards/{boardId}/lists/order
+          path: boards/{id}/lists/order
           method: put
           cors: true
           authorizer:
@@ -252,7 +252,7 @@ functions:
     handler: handler.createCardHandler
     events:
       - http:
-          path: lists/{listId}/cards
+          path: lists/{id}/cards
           method: post
           cors: true
           authorizer:
@@ -264,7 +264,7 @@ functions:
     handler: handler.getCardsHandler
     events:
       - http:
-          path: lists/{listId}/cards
+          path: lists/{id}/cards
           method: get
           cors: true
           authorizer:
@@ -312,7 +312,7 @@ functions:
     handler: handler.updateCardOrderHandler
     events:
       - http:
-          path: lists/{listId}/cards/order
+          path: lists/{id}/cards/order
           method: put
           cors: true
           authorizer:

@@ -49,7 +49,8 @@ export const validateInvite = async (event) => {
 
 export const createInvite = async (event) => {
   try {
-    const { boardId } = event.pathParameters;
+    const { id } = event.pathParameters;
+    const boardId = id;
     const { email } = JSON.parse(event.body);
     const userId = event.requestContext.authorizer.principalId;
 
@@ -156,7 +157,8 @@ export const rejectInvite = async (event) => {
 
 export const deleteInvite = async (event) => {
   try {
-    const { boardId, inviteId } = event.pathParameters;
+    const { id, inviteId } = event.pathParameters;
+    const boardId = id;
     const userId = event.requestContext.authorizer.principalId;
 
     const { board, message } = await checkPermissions(boardId, userId);
@@ -179,7 +181,8 @@ export const deleteInvite = async (event) => {
 
 export const getBoardInvites = async (event) => {
   try {
-    const { boardId } = event.pathParameters;
+    const { id } = event.pathParameters;
+    const boardId = id;
     const userId = event.requestContext.authorizer.principalId;
 
     const { board, message } = await checkPermissions(boardId, userId);

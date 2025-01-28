@@ -3,7 +3,8 @@ import List from '../models/List.js';
 
 export const createlist = async (event) => {
   try {
-    const { boardId } = event.pathParameters;
+    const { id } = event.pathParameters;
+    const boardId = id
     const { title, order } = JSON.parse(event.body);
 
     if (!boardId || !title || order === undefined) {
@@ -57,7 +58,8 @@ export const createlist = async (event) => {
 
 export const getlists = async (event) => {
   try {
-    const { boardId } = event.pathParameters;
+    const { id } = event.pathParameters;
+    const boardId = id;
 
     // Fetch lists associated with the board
     const lists = await List.find({ boardId });
@@ -170,7 +172,8 @@ export const deletelist = async (event) => {
 // Update List Order Function
 export const updateListOrder = async (event) => {
   try {
-    const { boardId } = event.pathParameters;
+    const { id } = event.pathParameters;
+    const boardId = id;
     const { listIds } = JSON.parse(event.body);
 
     if (!listIds || listIds.length === 0) {

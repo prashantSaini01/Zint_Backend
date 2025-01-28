@@ -6,7 +6,8 @@ import User from '../models/User.js';
 
 export const createcard = async (event) => {
   try {
-    const { listId } = event.pathParameters;
+    const { id } = event.pathParameters;
+    const listId = id;
     const { title, description, position,subtasks } = JSON.parse(event.body);
     console.log(subtasks);
 
@@ -59,7 +60,8 @@ export const createcard = async (event) => {
 // Get all Cards Function
 export const getcards = async (event) => {
   try {
-    const { listId } = event.pathParameters;
+    const { id } = event.pathParameters;
+    const listId = id;
 
     if (!listId || !mongoose.Types.ObjectId.isValid(listId)) {
       return {
@@ -275,7 +277,8 @@ export const deletecard = async (event) => {
 
 export const updateCardOrder = async (event) => {
   try {
-    const { listId } = event.pathParameters;
+    const { id } = event.pathParameters;
+    const listId = id;
     const { cardOrders } = JSON.parse(event.body);
 
     if (!mongoose.Types.ObjectId.isValid(listId)) {
