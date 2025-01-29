@@ -20,7 +20,17 @@ functions:
       - http:
           path: signup
           method: post
-          cors: true
+          cors:
+            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            headers:
+             - Content-Type
+              - Authorization
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Headers
+              - X-Requested-With
+              - Accept
+              - Origin
+            allowCredentials: true  
 
   login:
     handler: handler.loginHandler
@@ -28,7 +38,17 @@ functions:
       - http:
           path: login
           method: post
-          cors: true
+          cors:
+            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            headers:
+              - Content-Type
+              - Authorization
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Headers
+              - X-Requested-With
+              - Accept
+              - Origin
+            allowCredentials: true  
 
   logout:
     handler: handler.logoutHandler
@@ -36,15 +56,34 @@ functions:
       - http:
           path: logout
           method: post
-          cors: true
-
+          cors:
+            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            headers:
+              - Content-Type
+              - Authorization
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Headers
+              - X-Requested-With
+              - Accept
+              - Origin
+            allowCredentials: true  
   validateInvite:
     handler: handler.validateInviteHandler
     events:
       - http:
           path: invites/{token}/validate
           method: get
-          cors: true
+          cors:
+            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            headers:
+             - Content-Type
+              - Authorization
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Headers
+              - X-Requested-With
+              - Accept
+              - Origin
+            allowCredentials: true   
 
   checkUser:
     handler: handler.checkUserHandler
@@ -52,7 +91,17 @@ functions:
       - http:
           path: users/check
           method: get
-          cors: true
+          cors:
+            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            headers:
+             - Content-Type
+              - Authorization
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Headers
+              - X-Requested-With
+              - Accept
+              - Origin
+            allowCredentials: true  
 
   # Protected APIs
   # Board APIs
@@ -62,7 +111,17 @@ functions:
       - http:
           path: boards
           method: post
-          cors: true
+          cors:
+            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            headers:
+              - Content-Type
+              - Authorization
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Headers
+              - X-Requested-With
+              - Accept
+              - Origin
+            allowCredentials: true  
           authorizer:
             name: authorize
             resultTtlInSeconds: 0
@@ -74,7 +133,17 @@ functions:
       - http:
           path: boards
           method: get
-          cors: true
+          cors:
+            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            headers:
+              - Content-Type
+              - Authorization
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Headers
+              - X-Requested-With
+              - Accept
+              - Origin
+            allowCredentials: true  
           authorizer:
             name: authorize
             resultTtlInSeconds: 0
@@ -86,7 +155,17 @@ functions:
       - http:
           path: boards/{id}
           method: get
-          cors: true
+          cors:
+            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            headers:
+             - Content-Type
+              - Authorization
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Headers
+              - X-Requested-With
+              - Accept
+              - Origin
+            allowCredentials: true  
           authorizer:
             name: authorize
             resultTtlInSeconds: 0
@@ -98,7 +177,17 @@ functions:
       - http:
           path: boards/{id}
           method: put
-          cors: true
+          cors:
+            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            headers:
+              - Content-Type
+              - Authorization
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Headers
+              - X-Requested-With
+              - Accept
+              - Origin
+            allowCredentials: true  
           authorizer:
             name: authorize
             resultTtlInSeconds: 0
@@ -110,7 +199,17 @@ functions:
       - http:
           path: boards/{id}
           method: delete
-          cors: true
+          cors:
+            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            headers:
+              - Content-Type
+              - Authorization
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Headers
+              - X-Requested-With
+              - Accept
+              - Origin
+            allowCredentials: true  
           authorizer:
             name: authorize
             resultTtlInSeconds: 0
@@ -123,7 +222,17 @@ functions:
       - http:
           path: boards/{id}/invites
           method: post
-          cors: true
+          cors:
+            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            headers:
+              - Content-Type
+              - Authorization
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Headers
+              - X-Requested-With
+              - Accept
+              - Origin
+            allowCredentials: true  
           authorizer:
             name: authorize
             resultTtlInSeconds: 0
@@ -135,7 +244,17 @@ functions:
       - http:
           path: boards/{id}/invites
           method: get
-          cors: true
+          cors:
+            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            headers:
+             - Content-Type
+              - Authorization
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Headers
+              - X-Requested-With
+              - Accept
+              - Origin
+            allowCredentials: true  
           authorizer:
             name: authorize
             resultTtlInSeconds: 0
@@ -147,7 +266,17 @@ functions:
       - http:
           path: invites/{token}/accept
           method: post
-          cors: true
+          cors:
+            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            headers:
+             - Content-Type
+              - Authorization
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Headers
+              - X-Requested-With
+              - Accept
+              - Origin
+            allowCredentials: true  
           authorizer:
             name: authorize
             resultTtlInSeconds: 0
@@ -159,7 +288,17 @@ functions:
       - http:
           path: invites/{token}/reject
           method: post
-          cors: true
+          cors:
+            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            headers:
+              - Content-Type
+              - Authorization
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Headers
+              - X-Requested-With
+              - Accept
+              - Origin
+            allowCredentials: true  
           authorizer:
             name: authorize
             resultTtlInSeconds: 0
@@ -171,7 +310,17 @@ functions:
       - http:
           path: boards/{id}/invites/{inviteId}
           method: delete
-          cors: true
+          cors:
+            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            headers:
+             - Content-Type
+              - Authorization
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Headers
+              - X-Requested-With
+              - Accept
+              - Origin
+            allowCredentials: true  
           authorizer:
             name: authorize
             resultTtlInSeconds: 0
@@ -184,7 +333,17 @@ functions:
       - http:
           path: boards/{id}/lists
           method: post
-          cors: true
+          cors:
+            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            headers:
+             - Content-Type
+              - Authorization
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Headers
+              - X-Requested-With
+              - Accept
+              - Origin
+            allowCredentials: true  
           authorizer:
             name: authorize
             resultTtlInSeconds: 0
@@ -196,7 +355,17 @@ functions:
       - http:
           path: boards/{id}/lists
           method: get
-          cors: true
+          cors:
+            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            headers:
+             - Content-Type
+              - Authorization
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Headers
+              - X-Requested-With
+              - Accept
+              - Origin
+            allowCredentials: true  
           authorizer:
             name: authorize
             resultTtlInSeconds: 0
@@ -208,7 +377,17 @@ functions:
       - http:
           path: lists/{id}
           method: get
-          cors: true
+          cors:
+            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            headers:
+              - Content-Type
+              - Authorization
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Headers
+              - X-Requested-With
+              - Accept
+              - Origin
+            allowCredentials: true  
           authorizer:
             name: authorize
             resultTtlInSeconds: 0
@@ -220,7 +399,17 @@ functions:
       - http:
           path: lists/{id}
           method: put
-          cors: true
+          cors:
+            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            headers:
+              - Content-Type
+              - Authorization
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Headers
+              - X-Requested-With
+              - Accept
+              - Origin
+            allowCredentials: true  
           authorizer:
             name: authorize
             resultTtlInSeconds: 0
@@ -232,7 +421,17 @@ functions:
       - http:
           path: lists/{id}
           method: delete
-          cors: true
+          cors:
+            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            headers:
+              - Content-Type
+              - Authorization
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Headers
+              - X-Requested-With
+              - Accept
+              - Origin
+            allowCredentials: true  
           authorizer:
             name: authorize
             resultTtlInSeconds: 0
@@ -244,7 +443,17 @@ functions:
       - http:
           path: boards/{id}/lists/order
           method: put
-          cors: true
+          cors:
+            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            headers:
+              - Content-Type
+              - Authorization
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Headers
+              - X-Requested-With
+              - Accept
+              - Origin
+            allowCredentials: true  
           authorizer:
             name: authorize
             resultTtlInSeconds: 0
@@ -257,7 +466,17 @@ functions:
       - http:
           path: lists/{id}/cards
           method: post
-          cors: true
+          cors:
+            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            headers:
+              - Content-Type
+              - Authorization
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Headers
+              - X-Requested-With
+              - Accept
+              - Origin
+            allowCredentials: true  
           authorizer:
             name: authorize
             resultTtlInSeconds: 0
@@ -269,7 +488,17 @@ functions:
       - http:
           path: lists/{id}/cards
           method: get
-          cors: true
+          cors:
+            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            headers:
+              - Content-Type
+              - Authorization
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Headers
+              - X-Requested-With
+              - Accept
+              - Origin
+            allowCredentials: true  
           authorizer:
             name: authorize
             resultTtlInSeconds: 0
@@ -281,7 +510,17 @@ functions:
       - http:
           path: cards/{id}
           method: get
-          cors: true
+          cors:
+            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            headers:
+              - Content-Type
+              - Authorization
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Headers
+              - X-Requested-With
+              - Accept
+              - Origin
+            allowCredentials: true  
           authorizer:
             name: authorize
             resultTtlInSeconds: 0
@@ -293,7 +532,17 @@ functions:
       - http:
           path: cards/{id}
           method: put
-          cors: true
+          cors:
+            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            headers:
+              - Content-Type
+              - Authorization
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Headers
+              - X-Requested-With
+              - Accept
+              - Origin
+            allowCredentials: true  
           authorizer:
             name: authorize
             resultTtlInSeconds: 0
@@ -305,7 +554,17 @@ functions:
       - http:
           path: cards/{id}
           method: delete
-          cors: true
+          cors:
+            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            headers:
+              - Content-Type
+              - Authorization
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Headers
+              - X-Requested-With
+              - Accept
+              - Origin
+            allowCredentials: true  
           authorizer:
             name: authorize
             resultTtlInSeconds: 0
@@ -317,7 +576,17 @@ functions:
       - http:
           path: lists/{id}/cards/order
           method: put
-          cors: true
+          cors:
+            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            headers:
+              - Content-Type
+              - Authorization
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Headers
+              - X-Requested-With
+              - Accept
+              - Origin
+            allowCredentials: true  
           authorizer:
             name: authorize
             resultTtlInSeconds: 0
@@ -330,7 +599,17 @@ functions:
       - http:
           path: templates
           method: get
-          cors: true
+          cors:
+            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            headers:
+              - Content-Type
+              - Authorization
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Headers
+              - X-Requested-With
+              - Accept
+              - Origin
+            allowCredentials: true  
           authorizer:
             name: authorize
             resultTtlInSeconds: 0
@@ -342,7 +621,17 @@ functions:
       - http:
           path: template
           method: post
-          cors: true
+          cors:
+            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            headers:
+              - Content-Type
+              - Authorization
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Headers
+              - X-Requested-With
+              - Accept
+              - Origin
+            allowCredentials: true  
           authorizer:
             name: authorize
             resultTtlInSeconds: 0
@@ -354,7 +643,17 @@ functions:
       - http:
           path: template/{id}
           method: delete
-          cors: true
+          cors:
+            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            headers:
+              - Content-Type
+              - Authorization
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Headers
+              - X-Requested-With
+              - Accept
+              - Origin
+            allowCredentials: true  
           authorizer:
             name: authorize
             resultTtlInSeconds: 0
@@ -366,7 +665,17 @@ functions:
       - http:
           path: template/{id}
           method: put
-          cors: true
+          cors:
+            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            headers:
+              - Content-Type
+              - Authorization
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Headers
+              - X-Requested-With
+              - Accept
+              - Origin
+            allowCredentials: true  
           authorizer:
             name: authorize
             resultTtlInSeconds: 0
@@ -378,7 +687,17 @@ functions:
       - http:
           path: template/{id}
           method: get
-          cors: true
+          cors:
+            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            headers:
+              - Content-Type
+              - Authorization
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Headers
+              - X-Requested-With
+              - Accept
+              - Origin
+            allowCredentials: true  
           authorizer:
             name: authorize
             resultTtlInSeconds: 0
@@ -390,7 +709,17 @@ functions:
       - http:
           path: schedule
           method: post
-          cors: true
+          cors:
+            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            headers:
+             - Content-Type
+              - Authorization
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Headers
+              - X-Requested-With
+              - Accept
+              - Origin
+            allowCredentials: true  
           authorizer:
             name: authorize
             resultTtlInSeconds: 0
@@ -401,7 +730,17 @@ functions:
       - http:
           path: schedule/{id}
           method: delete
-          cors: true
+          cors:
+            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            headers:
+              - Content-Type
+              - Authorization
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Headers
+              - X-Requested-With
+              - Accept
+              - Origin
+            allowCredentials: true  
           authorizer:
             name: authorize
             resultTtlInSeconds: 0
@@ -413,7 +752,17 @@ functions:
       - http:
           path: schedule
           method: get
-          cors: true
+          cors:
+            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            headers:
+              - Content-Type
+              - Authorization
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Headers
+              - X-Requested-With
+              - Accept
+              - Origin
+            allowCredentials: true  
           authorizer:
             name: authorize
             resultTtlInSeconds: 0
