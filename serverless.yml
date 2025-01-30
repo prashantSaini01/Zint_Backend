@@ -21,7 +21,7 @@ functions:
           path: signup
           method: post
           cors:
-            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            origin: 'https://master.d2u1ipgb07w8b3.amplifyapp.com'
             headers:
              - Content-Type
               - Authorization
@@ -39,7 +39,7 @@ functions:
           path: login
           method: post
           cors:
-            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            origin: 'https://master.d2u1ipgb07w8b3.amplifyapp.com'
             headers:
               - Content-Type
               - Authorization
@@ -57,7 +57,7 @@ functions:
           path: logout
           method: post
           cors:
-            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            origin: 'https://master.d2u1ipgb07w8b3.amplifyapp.com'
             headers:
               - Content-Type
               - Authorization
@@ -74,7 +74,7 @@ functions:
           path: invites/{token}/validate
           method: get
           cors:
-            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            origin: 'https://master.d2u1ipgb07w8b3.amplifyapp.com'
             headers:
              - Content-Type
               - Authorization
@@ -92,7 +92,7 @@ functions:
           path: users/check
           method: get
           cors:
-            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            origin: 'https://master.d2u1ipgb07w8b3.amplifyapp.com'
             headers:
              - Content-Type
               - Authorization
@@ -112,7 +112,7 @@ functions:
           path: boards
           method: post
           cors:
-            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            origin: 'https://master.d2u1ipgb07w8b3.amplifyapp.com'
             headers:
               - Content-Type
               - Authorization
@@ -134,7 +134,8 @@ functions:
           path: boards
           method: get
           cors:
-            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            # origin: 'https://master.d2u1ipgb07w8b3.amplifyapp.com'
+            origin: 'https://master.d2u1ipgb07w8b3.amplifyapp.com'
             headers:
               - Content-Type
               - Authorization
@@ -143,11 +144,12 @@ functions:
               - X-Requested-With
               - Accept
               - Origin
-            allowCredentials: true  
+            allowCredentials: true
           authorizer:
             name: authorize
             resultTtlInSeconds: 0
             identitySource: method.request.header.Cookie
+
 
   getBoardById:
     handler: handler.getBoardByIdHandler
@@ -156,7 +158,7 @@ functions:
           path: boards/{id}
           method: get
           cors:
-            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            origin: 'https://master.d2u1ipgb07w8b3.amplifyapp.com'
             headers:
              - Content-Type
               - Authorization
@@ -178,7 +180,7 @@ functions:
           path: boards/{id}
           method: put
           cors:
-            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            origin: 'https://master.d2u1ipgb07w8b3.amplifyapp.com'
             headers:
               - Content-Type
               - Authorization
@@ -200,7 +202,7 @@ functions:
           path: boards/{id}
           method: delete
           cors:
-            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            origin: 'https://master.d2u1ipgb07w8b3.amplifyapp.com'
             headers:
               - Content-Type
               - Authorization
@@ -223,7 +225,7 @@ functions:
           path: boards/{id}/invites
           method: post
           cors:
-            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            origin: 'https://master.d2u1ipgb07w8b3.amplifyapp.com'
             headers:
               - Content-Type
               - Authorization
@@ -245,7 +247,7 @@ functions:
           path: boards/{id}/invites
           method: get
           cors:
-            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            origin: 'https://master.d2u1ipgb07w8b3.amplifyapp.com'
             headers:
              - Content-Type
               - Authorization
@@ -267,7 +269,7 @@ functions:
           path: invites/{token}/accept
           method: post
           cors:
-            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            origin: 'https://master.d2u1ipgb07w8b3.amplifyapp.com'
             headers:
              - Content-Type
               - Authorization
@@ -289,7 +291,7 @@ functions:
           path: invites/{token}/reject
           method: post
           cors:
-            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            origin: 'https://master.d2u1ipgb07w8b3.amplifyapp.com'
             headers:
               - Content-Type
               - Authorization
@@ -311,7 +313,7 @@ functions:
           path: boards/{id}/invites/{inviteId}
           method: delete
           cors:
-            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            origin: 'https://master.d2u1ipgb07w8b3.amplifyapp.com'
             headers:
              - Content-Type
               - Authorization
@@ -334,7 +336,7 @@ functions:
           path: boards/{id}/lists
           method: post
           cors:
-            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            origin: 'https://master.d2u1ipgb07w8b3.amplifyapp.com'
             headers:
              - Content-Type
               - Authorization
@@ -356,7 +358,7 @@ functions:
           path: boards/{id}/lists
           method: get
           cors:
-            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            origin: 'https://master.d2u1ipgb07w8b3.amplifyapp.com'
             headers:
              - Content-Type
               - Authorization
@@ -378,7 +380,7 @@ functions:
           path: lists/{id}
           method: get
           cors:
-            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            origin: 'https://master.d2u1ipgb07w8b3.amplifyapp.com'
             headers:
               - Content-Type
               - Authorization
@@ -400,7 +402,7 @@ functions:
           path: lists/{id}
           method: put
           cors:
-            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            origin: 'https://master.d2u1ipgb07w8b3.amplifyapp.com'
             headers:
               - Content-Type
               - Authorization
@@ -422,7 +424,7 @@ functions:
           path: lists/{id}
           method: delete
           cors:
-            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            origin: 'https://master.d2u1ipgb07w8b3.amplifyapp.com'
             headers:
               - Content-Type
               - Authorization
@@ -444,7 +446,7 @@ functions:
           path: boards/{id}/lists/order
           method: put
           cors:
-            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            origin: 'https://master.d2u1ipgb07w8b3.amplifyapp.com'
             headers:
               - Content-Type
               - Authorization
@@ -467,7 +469,7 @@ functions:
           path: lists/{id}/cards
           method: post
           cors:
-            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            origin: 'https://master.d2u1ipgb07w8b3.amplifyapp.com'
             headers:
               - Content-Type
               - Authorization
@@ -489,7 +491,7 @@ functions:
           path: lists/{id}/cards
           method: get
           cors:
-            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            origin: 'https://master.d2u1ipgb07w8b3.amplifyapp.com'
             headers:
               - Content-Type
               - Authorization
@@ -511,7 +513,7 @@ functions:
           path: cards/{id}
           method: get
           cors:
-            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            origin: 'https://master.d2u1ipgb07w8b3.amplifyapp.com'
             headers:
               - Content-Type
               - Authorization
@@ -533,7 +535,7 @@ functions:
           path: cards/{id}
           method: put
           cors:
-            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            origin: 'https://master.d2u1ipgb07w8b3.amplifyapp.com'
             headers:
               - Content-Type
               - Authorization
@@ -555,7 +557,7 @@ functions:
           path: cards/{id}
           method: delete
           cors:
-            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            origin: 'https://master.d2u1ipgb07w8b3.amplifyapp.com'
             headers:
               - Content-Type
               - Authorization
@@ -577,7 +579,7 @@ functions:
           path: lists/{id}/cards/order
           method: put
           cors:
-            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            origin: 'https://master.d2u1ipgb07w8b3.amplifyapp.com'
             headers:
               - Content-Type
               - Authorization
@@ -600,7 +602,7 @@ functions:
           path: templates
           method: get
           cors:
-            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            origin: 'https://master.d2u1ipgb07w8b3.amplifyapp.com'
             headers:
               - Content-Type
               - Authorization
@@ -622,7 +624,7 @@ functions:
           path: template
           method: post
           cors:
-            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            origin: 'https://master.d2u1ipgb07w8b3.amplifyapp.com'
             headers:
               - Content-Type
               - Authorization
@@ -644,7 +646,7 @@ functions:
           path: template/{id}
           method: delete
           cors:
-            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            origin: 'https://master.d2u1ipgb07w8b3.amplifyapp.com'
             headers:
               - Content-Type
               - Authorization
@@ -666,7 +668,7 @@ functions:
           path: template/{id}
           method: put
           cors:
-            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            origin: 'https://master.d2u1ipgb07w8b3.amplifyapp.com'
             headers:
               - Content-Type
               - Authorization
@@ -688,7 +690,7 @@ functions:
           path: template/{id}
           method: get
           cors:
-            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            origin: 'https://master.d2u1ipgb07w8b3.amplifyapp.com'
             headers:
               - Content-Type
               - Authorization
@@ -710,7 +712,7 @@ functions:
           path: schedule
           method: post
           cors:
-            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            origin: 'https://master.d2u1ipgb07w8b3.amplifyapp.com'
             headers:
              - Content-Type
               - Authorization
@@ -731,7 +733,7 @@ functions:
           path: schedule/{id}
           method: delete
           cors:
-            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            origin: 'https://master.d2u1ipgb07w8b3.amplifyapp.com'
             headers:
               - Content-Type
               - Authorization
@@ -753,7 +755,7 @@ functions:
           path: schedule
           method: get
           cors:
-            origin: 'https://master.d2w98cujoo2tbe.amplifyapp.com'
+            origin: 'https://master.d2u1ipgb07w8b3.amplifyapp.com'
             headers:
               - Content-Type
               - Authorization

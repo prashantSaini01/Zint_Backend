@@ -1,6 +1,6 @@
 // handler.js
 import { signup, login, logout } from './controllers/authController.js';
-import jwt from 'jsonwebtoken';
+import jwt, { decode } from 'jsonwebtoken';
 import { createboard, getboard, getboardbyid, updateboard, deleteboard } from './controllers/boardController.js';
 import { createlist, getlists, getlistsbyid, updatelist, deletelist, updateListOrder } from './controllers/listController.js';
 import { createcard, getcards, getcardbyid, updatecard, deletecard, updateCardOrder} from './controllers/cardController.js';
@@ -15,6 +15,7 @@ import {
 } from './controllers/schedulerController.js';
 
 import { cancelScheduledCard} from './controllers/schedulerController.js';
+import { formatJSONResponse } from './utils/apigateway.js';
 
 
 startScheduler(); // Start the scheduler when the server starts
@@ -90,26 +91,29 @@ export const checkUserHandler = async (event) => checkUser(event); // Ensure thi
 // Helper Function
 // export const helperHandler = async (event) => helper(event);
 
+
+
+// Local Code Runs Perfectly
+
+
+
 // Protected Routes Authorization Function
 export const authorize = async (event) => {
   // Extract the 'jwt' cookie value from the request headers (not Set-Cookie)
-  const cookies = event.headers.Cookie;  // Request headers (Cookie header)
+  const cookies = event.headers.Cookie || event.headers.cookie;
   
   if (!cookies) {
-    return {
-      statusCode: 401,
-      body: JSON.stringify({ message: 'Unauthorized: No cookie provided' }),
-    };
-  }
+    return formatJSONResponse(401,{
+       message: 'Unauthorized: No cookie provided' })
+    }
+  
 
   // Extract the JWT token from the 'jwt' cookie in the request header
   const token = cookies.split(';').find(cookie => cookie.trim().startsWith('jwt='));
   
   if (!token) {
-    return {
-      statusCode: 401,
-      body: JSON.stringify({ message: 'Unauthorized: No JWT token in cookie' }),
-    };
+    return formatJSONResponse(401,{
+     message: 'Unauthorized: No JWT token in cookie' })
   }
 
   const jwtToken = token.split('=')[1];
@@ -117,6 +121,7 @@ export const authorize = async (event) => {
   try {
     // Verify the JWT token
     const decoded = jwt.verify(jwtToken, process.env.JWT_SECRET);
+    console.log(decoded.id)
 
     // Return IAM policy allowing access to the requested resource
     return {
@@ -134,9 +139,8 @@ export const authorize = async (event) => {
     };
   } catch (err) {
     // If JWT is invalid or expired, deny access
-    return {
-      statusCode: 403,
-      body: JSON.stringify({ message: 'Forbidden: Invalid or expired JWT token' }),
-    };
+    return formatJSONResponse(403,{
+      message: 'Forbidden: Invalid or expired JWT token' })
+  
   }
 };
