@@ -69,7 +69,7 @@ export const createInvite = async (req, res) => {
       token: generateToken(),
     });
 
-    const inviteUrl = `http://localhost:3001/invite/${invite.token}`;
+    const inviteUrl = `https://sktj4oxskh.execute-api.ap-south-1.amazonaws.com/invite/${invite.token}`;
     await sendEmail({
       to: email,
       subject: `Invitation to collaborate on ${board.title}`,

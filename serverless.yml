@@ -18,7 +18,21 @@ provider:
   logs:
     httpApi: true
   httpApi:
-    cors: true
+    cors:
+      allowedOrigins:
+        # - http://localhost:3001 # Add the frontend URL here
+        - https://deployment.d3iar3akvow17y.amplifyapp.com
+      allowedHeaders:
+        - Content-Type
+        - Authorization
+        - X-Requested-With
+      allowCredentials: true # Enables credentials (cookies, tokens, etc.)
+      allowedMethods:
+        - OPTIONS
+        - GET
+        - POST
+        - PUT
+        - DELETE
 
 functions:
   app:

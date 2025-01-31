@@ -19,9 +19,10 @@ const app = express();
 
 // Configure CORS with specific options
 const corsOptions = {
-  origin: 'http://localhost:3000',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'], // Add any custom headers you might be sending
+  origin: ['https://deployment.d3iar3akvow17y.amplifyapp.com','http://localhost:3000', 'http://localhost:3001'], // Add all allowed origins
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Specify HTTP methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // Include custom headers if used
+  credentials: true, // Allow credentials (cookies, authorization headers, etc.)
 };
 
 // Apply CORS middleware before any routes
@@ -34,10 +35,10 @@ app.use(express.json());
 app.use('/auth', authRoute);
 app.use('/board', verifyJwt, boardRoute);
 app.use('/card', verifyJwt, cardRoute);
-app.use('/invite', verifyJwt, inviteRoute);
+app.use('/invite', verifyJwt,inviteRoute);
 app.use('/schedule', verifyJwt, scheduleRoute);
 app.use('/template', verifyJwt, templateRoute);
-app.use('/valid', verifyJwt, validRoute);
+app.use('/valid', validRoute);
 app.use('/list', verifyJwt, listRoute);
 
 // Root route
