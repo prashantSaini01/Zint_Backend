@@ -20,7 +20,7 @@ provider:
   httpApi:
     cors:
       allowedOrigins:
-        # - http://localhost:3001 # Add the frontend URL here
+        - http://localhost:3001 # Add the frontend URL here
         - https://deployment.d3iar3akvow17y.amplifyapp.com
       allowedHeaders:
         - Content-Type

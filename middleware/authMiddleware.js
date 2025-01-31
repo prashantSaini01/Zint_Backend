@@ -6,6 +6,7 @@ const SECRET_KEY = process.env.JWT_SECRET; // Replace with your actual secret ke
 export const verifyJwt = (req, res, next) => {
   try {
     // Retrieve token from request headers
+    // console.log(req)
     const authHeader = req.headers['authorization'];
     if (!authHeader) {
       return res.status(401).json({ message: 'Authorization header is missing' });
