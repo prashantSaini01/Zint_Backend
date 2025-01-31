@@ -1,146 +1,61 @@
-// handler.js
-import { signup, login, logout } from './controllers/authController.js';
-import jwt, { decode } from 'jsonwebtoken';
-import { createboard, getboard, getboardbyid, updateboard, deleteboard } from './controllers/boardController.js';
-import { createlist, getlists, getlistsbyid, updatelist, deletelist, updateListOrder } from './controllers/listController.js';
-import { createcard, getcards, getcardbyid, updatecard, deletecard, updateCardOrder} from './controllers/cardController.js';
-import mongoose from 'mongoose';
-import { getBoardInvites, acceptInvite, deleteInvite, createInvite, validateInvite,rejectInvite} from './controllers/inviteHandlers.js';
-import { checkUser } from './controllers/check.js';
-import { getTemplates,createTemplate,updateTemplate,getTemplateById,deleteTemplate } from './controllers/templateController.js';
-import { 
-  createScheduledCard, 
-  getScheduledCards, 
-  startScheduler
-} from './controllers/schedulerController.js';
+import serverlessHttp from 'serverless-http';
+import { app } from './index.js';
+import { connectDB } from './utils/db.js';
+import { startScheduler } from './controllers/schedulerController.js';
 
-import { cancelScheduledCard} from './controllers/schedulerController.js';
-import { formatJSONResponse } from './utils/apigateway.js';
+let isConnected = false;
+let scheduleStart = false;
 
-
-startScheduler(); // Start the scheduler when the server starts
-
-// mongoose.connect(process.env.MONGO_URI);
-const connectDB = async () => {
-  try {
-    await mongoose.connect(process.env.MONGO_URI);
-    console.log('MongoDB connected');
-  } catch (error) {
-    console.error('MongoDB connection error:', error.message);
-    process.exit(1); // Exit process with failure
+// Initialize database connection
+const initializeDB = async () => {
+  if (!isConnected) {
+    try {
+      await connectDB();
+      isConnected = true;
+      console.log('Database connection initialized');
+    } catch (error) {
+      console.error('Failed to initialize database:', error);
+      isConnected = false;
+      throw error;
+    }
   }
 };
-connectDB();
 
-// login and Signup Functions
-export const signupHandler = async (event) => signup(event);
-export const loginHandler = async (event) => login(event);
-export const logoutHandler = async (event) => logout(event);
-
-// Board Functions
-export const createBoardHandler = async (event) => createboard(event);
-export const getBoardsHandler = async (event) => getboard(event);
-export const getBoardByIdHandler = async (event) => getboardbyid(event);
-export const updateBoardHandler = async (event) => updateboard(event);
-export const deleteBoardHandler = async (event) => deleteboard(event);
-
-// List Functions
-export const createListHandler = async (event) => createlist(event);
-export const getListsHandler = async (event) => getlists(event);
-export const getListByIdHandler = async (event) => getlistsbyid(event);
-export const updateListHandler = async (event) => updatelist(event);
-export const deleteListHandler = async (event) => deletelist(event);
-export const updateListOrderHandler = async (event) => updateListOrder(event);
-
-// Card Functions
-export const createCardHandler = async (event) => createcard(event);
-export const getCardsHandler = async (event) => getcards(event);
-export const getCardByIdHandler = async (event) => getcardbyid(event);
-export const updateCardHandler = async (event) => updatecard(event);
-export const deleteCardHandler = async (event) => deletecard(event);
-export const updateCardOrderHandler = async (event) => updateCardOrder(event);
-export const assignUserToCardHandler = async (event) => assignUserToCard(event);
-export const unassignUserFromCardHandler = async (event) => unassignUserFromCard(event);
-
-// Invite Functions
-export const getBoardInvitesHandler = async (event) => getBoardInvites(event);
-export const acceptInviteHandler = async (event) => acceptInvite(event);
-export const deleteInviteHandler = async (event) => deleteInvite(event);
-export const createInviteHandler = async (event) => createInvite(event);
-export const validateInviteHandler = async (event) => validateInvite(event);
-export const rejectInviteHandler = async (event) => rejectInvite(event);
-
-
-// Templates Functions
-export const createTemplateHandler = async (event) => createTemplate(event);
-export const getTemplatesHandler = async (event) => getTemplates(event);
-export const getTemplateByIdHandler = async (event) => getTemplateById(event);
-export const updateTemplateHandler = async (event) => updateTemplate(event);
-export const deleteTemplateHandler = async (event) => deleteTemplate(event);
-
-
-// Schedule Card Functions
-export const createScheduleCardHandler = async (event) => createScheduledCard(event);
-export const cancelScheduleCardHandler = async (event) => cancelScheduledCard(event);
-export const getScheduleCardsHandler = async (event) => getScheduledCards(event);
-
-// Check Functions
-export const checkUserHandler = async (event) => checkUser(event); // Ensure this is exported
-
-
-// Helper Function
-// export const helperHandler = async (event) => helper(event);
-
-
-
-// Local Code Runs Perfectly
-
-
-
-// Protected Routes Authorization Function
-export const authorize = async (event) => {
-  // Extract the 'jwt' cookie value from the request headers (not Set-Cookie)
-  const cookies = event.headers.Cookie || event.headers.cookie;
-  
-  if (!cookies) {
-    return formatJSONResponse(401,{
-       message: 'Unauthorized: No cookie provided' })
+// Initialize scheduler
+const initializeScheduler = async () => {
+  if (!scheduleStart) {
+    try {
+      await startScheduler();
+      scheduleStart = true;
+      console.log('Starting scheduler...');
+    } catch (error) {
+      console.error('Failed to start scheduler:', error);
+      scheduleStart = false;
+      throw error;
     }
-  
-
-  // Extract the JWT token from the 'jwt' cookie in the request header
-  const token = cookies.split(';').find(cookie => cookie.trim().startsWith('jwt='));
-  
-  if (!token) {
-    return formatJSONResponse(401,{
-     message: 'Unauthorized: No JWT token in cookie' })
   }
+};
 
-  const jwtToken = token.split('=')[1];
+// Lambda handler
+export const handler = async (event, context) => {
+  context.callbackWaitsForEmptyEventLoop = false;
 
-  try {
-    // Verify the JWT token
-    const decoded = jwt.verify(jwtToken, process.env.JWT_SECRET);
-    console.log(decoded.id)
+  // Initialize resources
+  await initializeDB();
+  await initializeScheduler();
 
-    // Return IAM policy allowing access to the requested resource
-    return {
-      principalId: decoded.id, // Ensure this is returned and available for the event context
-      policyDocument: {
-        Version: '2012-10-17',
-        Statement: [
-          {
-            Action: 'execute-api:Invoke',
-            Effect: 'Allow',
-            Resource: event.methodArn,
-          },
-        ],
-      }
-    };
-  } catch (err) {
-    // If JWT is invalid or expired, deny access
-    return formatJSONResponse(403,{
-      message: 'Forbidden: Invalid or expired JWT token' })
-  
-  }
+  // Create serverless handler
+  console.log("Before ServerlessHnadler")
+
+ 
+  // Handle the request
+
+
+  const handler = serverlessHttp(app);
+
+  console.log("After ServerlessHnadler")
+
+
+  // Handle the request
+  return handler(event, context);
 };

@@ -1,56 +1,11 @@
-// // controllers/check.js
-// import User from "../models/User.js";
-// import mongoose from "mongoose";
-
-// export const checkUser = async (event) => {
-//   const email = event.queryStringParameters.email;
-
-//   console.log('Checking user with email:', email); // Log the email
-
-//   // Ensure Mongoose is connected to the database
-//   if (mongoose.connection.readyState !== 1) {
-//     await mongoose.connect(process.env.MONGO_URI, {
-//       useNewUrlParser: true,
-//       useUnifiedTopology: true,
-//     });
-//   }
-
-//   try {
-//     const userExists = await User.findOne({ email });
-
-//     console.log('User exists:', !!userExists); // Log whether the user exists
-
-//     if (userExists) {
-//       return {
-//         statusCode: 200,
-//         body: JSON.stringify({ exists: true }),
-//       };
-//     } else {
-//       return {
-//         statusCode: 200,
-//         body: JSON.stringify({ exists: false }),
-//       };
-//     }
-//   } catch (error) {
-//     console.error("Error checking user:", error);
-//     return {
-//       statusCode: 500,
-//       body: JSON.stringify({ message: "Error checking user" }),
-//     };
-//   }
-// };
-
-
 // controllers/check.js
 import User from "../models/User.js";
 import mongoose from "mongoose";
-import { formatJSONResponse } from '../utils/apigateway.js';
 
+export const checkUser = async (req, res) => {
+  const email = req.query.email;  // Accessing query parameter from req.query
 
-export const checkUser = async (event) => {
-  const email = event.queryStringParameters.email;
-
-  console.log("Checking user with email:", email); // Log the email
+  console.log('Checking user with email:', email); // Log the email
 
   // Ensure Mongoose is connected to the database
   if (mongoose.connection.readyState !== 1) {
@@ -63,15 +18,15 @@ export const checkUser = async (event) => {
   try {
     const userExists = await User.findOne({ email });
 
-    console.log("User exists:", !!userExists); // Log whether the user exists
+    console.log('User exists:', !!userExists); // Log whether the user exists
 
     if (userExists) {
-      return formatJSONResponse(200, { exists: true });
+      return res.status(200).json({ exists: true });  // Responding with JSON
     } else {
-      return formatJSONResponse(200, { exists: false });
+      return res.status(200).json({ exists: false });  // Responding with JSON
     }
   } catch (error) {
     console.error("Error checking user:", error);
-    return formatJSONResponse(500, { message: "Error checking user" });
+    return res.status(500).json({ message: "Error checking user" });  // Sending error response
   }
 };

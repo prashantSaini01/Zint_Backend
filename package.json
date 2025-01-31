@@ -4,7 +4,11 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev:server": "cross-env NODE_ENV=development sls offline start --stage offline",
+    "deploy-prod": "cross-env NODE_ENV=production serverless deploy --stage production --region ap-south-1",
+    "deploy-dev": "cross-env NODE_ENV=production serverless deploy --stage development --region ap-south-1",
+    "dev": "run-p dev:*"
   },
   "keywords": [],
   "author": "",
@@ -14,16 +18,24 @@
     "aws-cli": "^0.0.2",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
     "croner": "^9.0.0",
+    "cross-env": "^7.0.3",
     "crypto": "^1.0.1",
     "dotenv": "^16.4.7",
+    "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.9.2",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.16",
-    "serverless": "^4.4.18"
+    "run-p": "^0.0.0",
+    "serverless": "^4.4.18",
+    "serverless-bundle": "^6.3.1",
+    "serverless-dotenv-plugin": "^6.0.0",
+    "serverless-http": "^3.2.0"
   },
   "devDependencies": {
+    "npm-run-all": "^4.1.5",
     "serverless-offline": "^14.4.0"
   }
 }
