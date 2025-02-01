@@ -38,7 +38,7 @@ app.use('/card', verifyJwt, cardRoute);
 app.use('/invite', verifyJwt,inviteRoute);
 app.use('/schedule', verifyJwt, scheduleRoute);
 app.use('/template', verifyJwt, templateRoute);
-app.use('/valid', verifyJwt,validRoute);
+app.use('/valid',validRoute);
 app.use('/list', verifyJwt, listRoute);
 
 // Root route

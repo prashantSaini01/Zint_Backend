@@ -74,10 +74,12 @@ export const createInvite = async (req, res) => {
       to: email,
       subject: `Invitation to collaborate on ${board.title}`,
       html: `
-        <h1>Board Invitation</h1>
-        <p>You've been invited to collaborate on the board "${board.title}"</p>
-        <p>Click the link below to accept the invitation:</p>
-        <a href="${inviteUrl}">Accept Invitation</a>
+     <h1>You're Invited to Join a Board</h1>
+<p>We’re excited to invite you to collaborate on the board <strong>"${board.title}"</strong>.</p>
+<p>If you're already a Zintle user, please log in to your account before accepting the invitation. If not, you can simply click below to get started.</p>
+<p>To accept the invitation, click the link below:</p>
+<a href="${inviteUrl}" style="text-decoration: none; color: #007BFF;">Accept Invitation</a>
+
       `,
     });
 
