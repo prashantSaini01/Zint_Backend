@@ -3,7 +3,8 @@ import List from '../models/List.js';
 import Card from '../models/Card.js';
 import User from '../models/User.js';
 
-// Create Card Function
+//  Create Card Function in Express
+
 export const createcard = async (req, res) => {
   try {
     const { id } = req.params;
@@ -40,6 +41,65 @@ export const createcard = async (req, res) => {
     return res.status(500).json({ message: 'Internal Server Error' });
   }
 };
+
+
+
+// // Lambda handler using event instead of req/res
+// export const createcard = async (event) => {
+//   try {
+//     const { id } = event.pathParameters; // Path parameters are now accessed from event
+//     const listId = id;
+//     const { title, description, position, subtasks } = JSON.parse(event.body); // JSON parsing
+
+//     if (!title || !listId || position === undefined) {
+//       return {
+//         statusCode: 400,
+//         body: JSON.stringify({ message: 'Title, List ID, and Position are required' }),
+//       };
+//     }
+
+//     // Logic to interact with your database (e.g., finding the list)
+//     const list = await List.findById(listId).populate('boardId');
+//     if (!list) {
+//       return {
+//         statusCode: 404,
+//         body: JSON.stringify({ message: 'List not found' }),
+//       };
+//     }
+
+//     const boardId = list.boardId?._id;
+//     if (!boardId) {
+//       return {
+//         statusCode: 400,
+//         body: JSON.stringify({ message: 'List must belong to a board' }),
+//       };
+//     }
+
+//     const newCard = new Card({
+//       title,
+//       description,
+//       list: listId,
+//       board: boardId,
+//       subtasks: subtasks || [],
+//       position,  // Set the position of the card
+//     });
+
+//     await newCard.save();
+
+//     return {
+//       statusCode: 201,
+//       body: JSON.stringify({ message: 'Card created successfully', card: newCard }),
+//     };
+//   } catch (error) {
+//     console.error('Error creating card:', error);
+//     return {
+//       statusCode: 500,
+//       body: JSON.stringify({ message: 'Internal Server Error' }),
+//     };
+//   }
+// };
+
+
 
 // Get all Cards Function
 export const getcards = async (req, res) => {

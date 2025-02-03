@@ -1,7 +1,9 @@
 import serverlessHttp from 'serverless-http';
+import serverless from 'serverless-http'
 import { app } from './index.js';
 import { connectDB } from './utils/db.js';
 import { startScheduler } from './controllers/schedulerController.js';
+
 
 let isConnected = false;
 let scheduleStart = false;
@@ -51,7 +53,8 @@ export const handler = async (event, context) => {
   // Handle the request
 
 
-  const handler = serverlessHttp(app);
+  // const handler = serverlessHttp(app);
+  const handler = serverless(app);
 
   console.log("After ServerlessHnadler")
 
@@ -59,3 +62,4 @@ export const handler = async (event, context) => {
   // Handle the request
   return handler(event, context);
 };
+

@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev:server": "cross-env NODE_ENV=development sls offline start --stage offline",
     "deploy-prod": "cross-env NODE_ENV=production serverless deploy --stage production --region ap-south-1",
-    "deploy-dev": "cross-env NODE_ENV=production serverless deploy --stage development --region ap-south-1",
+    "deploy-dev": "serverless deploy --stage development --region ap-south-1",
     "dev": "run-p dev:*"
   },
   "keywords": [],

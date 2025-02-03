@@ -15,32 +15,24 @@ provider:
     EMAIL_PASS: ${env:EMAIL_PASS}
   timeout: 900
   logRetentionInDays: 90
-  logs:
-    httpApi: true
-  httpApi:
-    cors:
-      allowedOrigins:
-        - http://localhost:3001 # Add the frontend URL here
-        - https://deployment.d3iar3akvow17y.amplifyapp.com
-      allowedHeaders:
-        - Content-Type
-        - Authorization
-        - X-Requested-With
-      allowCredentials: true # Enables credentials (cookies, tokens, etc.)
-      allowedMethods:
-        - OPTIONS
-        - GET
-        - POST
-        - PUT
-        - DELETE
+
 
 functions:
   app:
     handler: handler.handler
     events:
-      - httpApi:
-          path: '/{proxy+}'
-          method: '*'
+      - http:
+          path: /{proxy+}
+          method: any
+          cors:
+            origin: "https://deployment.d3iar3akvow17y.amplifyapp.com"
+            headers:
+              - Content-Type
+              - Authorization
+              - X-Requested-With
+            allowCredentials: true 
+      
+
 
 package:
   individually: true

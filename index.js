@@ -10,7 +10,7 @@ import listRoute from './routes/listRoute.js';
 import scheduleRoute from './routes/scheduleRoute.js';
 import templateRoute from './routes/templateRoute.js';
 import validRoute from './routes/vaildRoute.js';
-import { verifyJwt } from './middleware/authMiddleware.js';
+import { verifyJwt,verifyApiKey } from './middleware/authMiddleware.js';
 
 // Load environment variables from .env
 dotenv.config();
@@ -40,6 +40,7 @@ app.use('/schedule', verifyJwt, scheduleRoute);
 app.use('/template', verifyJwt, templateRoute);
 app.use('/valid',validRoute);
 app.use('/list', verifyJwt, listRoute);
+app.use('/api/card',verifyApiKey,cardRoute)
 
 // Root route
 app.get('/', (req, res) => {
