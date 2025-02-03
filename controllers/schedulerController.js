@@ -10,7 +10,7 @@ const formatDate = () => {
   return `${day} - ${date}`;
 };
 
-const dateSuffix = formatDate();
+// const dateSuffix = formatDate();
 
 export const createScheduledCard = async (req, res) => {
   try {
@@ -94,8 +94,9 @@ const scheduleCardCreation = async () => {
     cronExpressions.forEach((cronExpression) => {
       new Cron(cronExpression, async () => {
         try {
+          const currentDateSuffix = formatDate(); 
           const newCard = new Card({
-            title: `${scheduledCard.cardTitle} - ${dateSuffix}`,
+            title: `${scheduledCard.cardTitle} - ${currentDateSuffix}`,
             description: scheduledCard.templateId.description,
             subtasks: scheduledCard.templateId.subtasks,
             list: scheduledCard.listId,
