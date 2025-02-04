@@ -1,36 +1,54 @@
-// import mongoose from 'mongoose';
+
+
+
+
+// import mongoose from "mongoose";
 
 // const listSchema = new mongoose.Schema(
 //   {
 //     title: {
 //       type: String,
-//       required: [true, 'Title is required'],
+//       required: [true, "Title is required"],
 //       trim: true,
-//       maxlength: [50, 'Title cannot exceed 50 characters'],
+//       maxlength: [50, "Title cannot exceed 50 characters"],
 //     },
 //     boardId: {
 //       type: mongoose.Schema.Types.ObjectId,
-//       ref: 'Board', // Reference to the Board model
-//       required: [true, 'Board ID is required'],
+//       ref: "Board", // Reference to the Board model
+//       required: [true, "Board ID is required"],
 //     },
-//     order:{
-//       type:Number,
-//       default:0,
+//     order: {
+//       type: Number,
+//       default: 0,
 //       required: true,
-//     }
+//     },
+//     deletedAt: {
+//       type: Date,
+//       default: null, // Null means the list is active
+//     },
 //   },
 //   {
 //     timestamps: true, // Automatically adds createdAt and updatedAt fields
 //   }
 // );
 
-// const List = mongoose.model('List', listSchema);
+// // Instance method for soft delete
+// listSchema.methods.softDelete = function () {
+//   this.deletedAt = new Date(); // Mark as deleted
+//   return this.save();
+// };
+
+// // Static method to find only active (non-deleted) lists
+// listSchema.statics.findActive = function (query = {}) {
+//   return this.find({ deletedAt: null, ...query });
+// };
+
+// const List = mongoose.model("List", listSchema);
 
 // export default List;
 
 
-
-
+// models/List.js
 import mongoose from "mongoose";
 
 const listSchema = new mongoose.Schema(
@@ -51,9 +69,9 @@ const listSchema = new mongoose.Schema(
       default: 0,
       required: true,
     },
-    deletedAt: {
-      type: Date,
-      default: null, // Null means the list is active
+    deleted: {
+      type: Boolean,
+      default: false, // false means the list is active
     },
   },
   {
@@ -63,13 +81,13 @@ const listSchema = new mongoose.Schema(
 
 // Instance method for soft delete
 listSchema.methods.softDelete = function () {
-  this.deletedAt = new Date(); // Mark as deleted
+  this.deleted = true; // Mark as deleted
   return this.save();
 };
 
 // Static method to find only active (non-deleted) lists
 listSchema.statics.findActive = function (query = {}) {
-  return this.find({ deletedAt: null, ...query });
+  return this.find({ deleted: false, ...query });
 };
 
 const List = mongoose.model("List", listSchema);
