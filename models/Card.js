@@ -1,30 +1,33 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const cardSchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      maxlength: [50, 'Title cannot exceed 50 characters'],
-      required: [true, 'Card title is required'],
+      required: [true, "Card title is required"],
     },
     description: {
       type: String,
-      default: '',
-    },
-    board: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Board',
-      required: [true, 'Board reference is required'],
+      default: "",
     },
     list: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'List',
-      required: [true, 'List reference is required'],
+      ref: "List",
+      required: true,
+    },
+    board: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Board",
+      required: true,
+    },
+    position: {
+      type: Number,
+      required: true,
     },
     assignedUsers: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: "User",
       },
     ],
     subtasks: [
@@ -33,30 +36,26 @@ const cardSchema = new mongoose.Schema(
           type: String,
           required: true,
         },
+        dueDate: {
+          type: Date,
+        },
         assignedTo: {
           type: String,
-          default: '',
+          ref: "User",
         },
         completed: {
           type: Boolean,
           default: false,
         },
-        dueDate: {
+        deletedAt: {
           type: Date,
+          default: null,
         },
       },
     ],
-    dueDate: {
+    deletedAt: {
       type: Date,
-    },
-    labels: [
-      {
-        type: String,
-      },
-    ],
-    position: {
-      type: Number,
-      required: true,
+      default: null,
     },
   },
   {
@@ -64,89 +63,32 @@ const cardSchema = new mongoose.Schema(
   }
 );
 
+// Instance method to soft delete a card
+cardSchema.methods.softDelete = function () {
+  this.deletedAt = new Date();
+  return this.save();
+};
 
-const Card = mongoose.model('Card', cardSchema);
+// Instance method to soft delete a specific subtask
+cardSchema.methods.softDeleteSubtask = function (subtaskId) {
+  const subtask = this.subtasks.id(subtaskId);
+  if (subtask) {
+    subtask.deletedAt = new Date();
+    return this.save();
+  }
+  throw new Error("Subtask not found");
+};
+
+// Static method to find only active cards
+cardSchema.statics.findActive = function () {
+  return this.find({ deletedAt: null });
+};
+
+// Helper method to filter active subtasks
+cardSchema.methods.getActiveSubtasks = function () {
+  return this.subtasks.filter((subtask) => subtask.deletedAt === null);
+};
+
+const Card = mongoose.model("Card", cardSchema);
 
 export default Card;
-
-
-
-
-
-
-
-// import mongoose from "mongoose";
-
-// const cardSchema = new mongoose.Schema(
-//   {
-//     title: {
-//       type: String,
-//       required: [true, "Card title is required"],
-//     },
-//     description: {
-//       type: String,
-//       default: "",
-//     },
-//     list: {
-//       type: mongoose.Schema.Types.ObjectId,
-//       ref: "List",
-//       required: true,
-//     },
-//     board: {
-//       type: mongoose.Schema.Types.ObjectId,
-//       ref: "Board",
-//       required: true,
-//     },
-//     position: {
-//       type: Number,
-//       required: true,
-//     },
-//     assignedUsers: [
-//       {
-//         type: mongoose.Schema.Types.ObjectId,
-//         ref: "User",
-//       },
-//     ],
-//     subtasks: [
-//       {
-//         title: {
-//           type: String,
-//           required: true,
-//         },
-//         dueDate: {
-//           type: Date,
-//         },
-//         assignedTo: {
-//           type: mongoose.Schema.Types.ObjectId,
-//           ref: "User",
-//         },
-//         completed: {
-//           type: Boolean,
-//           default: false,
-//         },
-//       },
-//     ],
-//     deletedAt: {
-//       type: Date,
-//       default: null, // Null means the card is active
-//     },
-//   },
-//   {
-//     timestamps: true, // Automatically adds createdAt and updatedAt fields
-//   }
-// );
-
-// // Instance method for soft delete
-// cardSchema.methods.softDelete = function () {
-//   this.deletedAt = new Date(); // Mark as deleted
-//   return this.save();
-// };
-
-// // Static method to find only active (non-deleted) cards
-// cardSchema.statics.findActive = function () {
-//   return this.find({ deletedAt: null });
-// };
-
-// const Card = mongoose.model("Card", cardSchema);
-
-// export default Card;
