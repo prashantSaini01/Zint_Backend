@@ -68,3 +68,85 @@ const cardSchema = new mongoose.Schema(
 const Card = mongoose.model('Card', cardSchema);
 
 export default Card;
+
+
+
+
+
+
+
+// import mongoose from "mongoose";
+
+// const cardSchema = new mongoose.Schema(
+//   {
+//     title: {
+//       type: String,
+//       required: [true, "Card title is required"],
+//     },
+//     description: {
+//       type: String,
+//       default: "",
+//     },
+//     list: {
+//       type: mongoose.Schema.Types.ObjectId,
+//       ref: "List",
+//       required: true,
+//     },
+//     board: {
+//       type: mongoose.Schema.Types.ObjectId,
+//       ref: "Board",
+//       required: true,
+//     },
+//     position: {
+//       type: Number,
+//       required: true,
+//     },
+//     assignedUsers: [
+//       {
+//         type: mongoose.Schema.Types.ObjectId,
+//         ref: "User",
+//       },
+//     ],
+//     subtasks: [
+//       {
+//         title: {
+//           type: String,
+//           required: true,
+//         },
+//         dueDate: {
+//           type: Date,
+//         },
+//         assignedTo: {
+//           type: mongoose.Schema.Types.ObjectId,
+//           ref: "User",
+//         },
+//         completed: {
+//           type: Boolean,
+//           default: false,
+//         },
+//       },
+//     ],
+//     deletedAt: {
+//       type: Date,
+//       default: null, // Null means the card is active
+//     },
+//   },
+//   {
+//     timestamps: true, // Automatically adds createdAt and updatedAt fields
+//   }
+// );
+
+// // Instance method for soft delete
+// cardSchema.methods.softDelete = function () {
+//   this.deletedAt = new Date(); // Mark as deleted
+//   return this.save();
+// };
+
+// // Static method to find only active (non-deleted) cards
+// cardSchema.statics.findActive = function () {
+//   return this.find({ deletedAt: null });
+// };
+
+// const Card = mongoose.model("Card", cardSchema);
+
+// export default Card;

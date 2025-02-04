@@ -10,7 +10,8 @@ import listRoute from './routes/listRoute.js';
 import scheduleRoute from './routes/scheduleRoute.js';
 import templateRoute from './routes/templateRoute.js';
 import validRoute from './routes/vaildRoute.js';
-import { verifyJwt,verifyApiKey } from './middleware/authMiddleware.js';
+// import { verifyJwt,verifyApiKey } from './middleware/authMiddleware.js';
+import { authenticate } from './middleware/authMiddleware.js';
 
 // Load environment variables from .env
 dotenv.config();
@@ -32,15 +33,31 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 // Define routes
+// app.use('/auth', authRoute);
+// app.use('/board', verifyJwt, boardRoute);
+// app.use('/card', verifyJwt, cardRoute);
+// app.use('/invite', verifyJwt,inviteRoute);
+// app.use('/schedule', verifyJwt, scheduleRoute);
+// app.use('/template', verifyJwt, templateRoute);
+// app.use('/valid',validRoute);
+// app.use('/list', verifyJwt, listRoute);
+// app.use('/api/card',verifyApiKey,cardRoute)
+
+// Define routes
 app.use('/auth', authRoute);
-app.use('/board', verifyJwt, boardRoute);
-app.use('/card', verifyJwt, cardRoute);
-app.use('/invite', verifyJwt,inviteRoute);
-app.use('/schedule', verifyJwt, scheduleRoute);
-app.use('/template', verifyJwt, templateRoute);
-app.use('/valid',validRoute);
-app.use('/list', verifyJwt, listRoute);
-app.use('/api/card',verifyApiKey,cardRoute)
+app.use('/board', authenticate, boardRoute);
+app.use('/card', authenticate, cardRoute);
+app.use('/invite', authenticate, inviteRoute);
+app.use('/schedule', authenticate, scheduleRoute);
+app.use('/template', authenticate, templateRoute);
+app.use('/valid', validRoute);
+app.use('/list', authenticate, listRoute);
+
+
+
+
+
+
 
 // Root route
 app.get('/', (req, res) => {
