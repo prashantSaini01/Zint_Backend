@@ -5,8 +5,8 @@ import { getTemplates,createTemplate,updateTemplate,getTemplateById,deleteTempla
 const templateRoute = Router();
 
 
-templateRoute.get('/', getTemplates);
-templateRoute.post('/', createTemplate);
+templateRoute.get('/boards/:id', getTemplates);
+templateRoute.post('/boards/:id', createTemplate);
 templateRoute.put('/:id', updateTemplate);
 templateRoute.get('/:id', getTemplateById);
 templateRoute.delete('/:id', deleteTemplate);

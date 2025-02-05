@@ -520,7 +520,7 @@ import User from "../models/User.js";
 export const createcard = async (req, res) => {
   try {
     const { id } = req.params; // List ID
-    const { title, description, position, subtasks } = req.body;
+    const { title, description, position, subtasks,dueDate } = req.body;
 
     if (!title || !id) {
       return res.status(400).json({
@@ -552,6 +552,7 @@ export const createcard = async (req, res) => {
       board: boardId,
       subtasks: subtasks || [],
       position: cardPosition,
+      dueDate:dueDate || null
     });
 
     await newCard.save();
@@ -619,7 +620,7 @@ export const getcardbyid = async (req, res) => {
 export const updatecard = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, description, listId, position, assignedUsers, subtasks } =
+    const { title, description, listId, position, assignedUsers, subtasks,dueDate } =
       req.body;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -657,6 +658,7 @@ export const updatecard = async (req, res) => {
     card.title = title || card.title;
     card.description = description || card.description;
     card.assignedUsers = userObjectIds;
+    card.dueDate = dueDate || card.dueDate;
 
     if (subtasks && Array.isArray(subtasks)) {
       card.subtasks = subtasks.map((subtask) => ({

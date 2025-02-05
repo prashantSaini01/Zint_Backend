@@ -2,7 +2,7 @@ import serverlessHttp from 'serverless-http';
 import serverless from 'serverless-http'
 import { app } from './index.js';
 import { connectDB } from './utils/db.js';
-import { startScheduler } from './controllers/schedulerController.js';
+import { startScheduler } from './utils/schedular.js';
 
 
 let isConnected = false;

@@ -152,6 +152,9 @@ const cardSchema = new mongoose.Schema(
       type: Boolean,
       default: false, // Changed to Boolean flag
     },
+    dueDate: {
+      type: Date,
+    },
   },
   {
     timestamps: true,
