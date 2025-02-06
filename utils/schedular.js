@@ -81,6 +81,6 @@ const formatDate = () => {
   
   export const startScheduler = () => {
     console.log("Starting scheduler...");
-    scheduleCardCreation();
+    // scheduleCardCreation();
   };
   
