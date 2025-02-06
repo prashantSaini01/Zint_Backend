@@ -1,7 +1,7 @@
 import Invite from '../models/Invite.js';
 import Board from '../models/Board.js';
 import User from '../models/User.js';
-import { sendEmail } from './email.js';
+import { sendEmail } from '../utils/email.js';
 import crypto from 'crypto';
 
 // Utility function for generating error responses
