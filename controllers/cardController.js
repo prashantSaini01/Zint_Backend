@@ -520,7 +520,7 @@ import User from "../models/User.js";
 export const createcard = async (req, res) => {
   try {
     const { id } = req.params; // List ID
-    const { title, description, position, subtasks,dueDate } = req.body;
+    const { title, description, position, subtasks,dueDate,assignedUsers } = req.body;
 
     if (!title || !id) {
       return res.status(400).json({
@@ -552,7 +552,8 @@ export const createcard = async (req, res) => {
       board: boardId,
       subtasks: subtasks || [],
       position: cardPosition,
-      dueDate:dueDate || null
+      dueDate:dueDate || null,
+      assignedUsers: assignedUsers || [],
     });
 
     await newCard.save();
@@ -588,40 +589,135 @@ export const getcards = async (req, res) => {
   }
 };
 
-// Get Card by ID
+// // Get Card by ID
+// export const getcardbyid = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+
+//     if (!mongoose.Types.ObjectId.isValid(id)) {
+//       return res.status(400).json({ message: "Invalid Card ID" });
+//     }
+
+//     const card = await Card.findOne({ _id: id, deleted: false }) // Check for deleted flag
+//       // .populate({
+//       //   path: "assignedUsers",
+//       //   select: "email",
+//       // });
+
+//     if (!card) {
+//       return res.status(404).json({ message: "Card not found" });
+//     }
+
+//     const assignedUsers = card.assignedUsers.map((user) => user.email);
+
+//     return res.status(200).json({ card: { ...card.toObject(), assignedUsers } });
+//   } catch (error) {
+//     console.error("Error fetching card:", error);
+//     return res.status(500).json({ message: "Internal Server Error" });
+//   }
+// };
+
 export const getcardbyid = async (req, res) => {
   try {
     const { id } = req.params;
 
+    // Validate the Card ID
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ message: "Invalid Card ID" });
     }
 
-    const card = await Card.findOne({ _id: id, deleted: false }) // Check for deleted flag
-      .populate({
-        path: "assignedUsers",
-        select: "email",
-      });
+    // Fetch the card without populating assignedUsers
+    const card = await Card.findOne({ _id: id, deleted: false }); // Exclude deleted cards
 
     if (!card) {
       return res.status(404).json({ message: "Card not found" });
     }
 
-    const assignedUsers = card.assignedUsers.map((user) => user.email);
-
-    return res.status(200).json({ card: { ...card.toObject(), assignedUsers } });
+    // Return the raw card data
+    return res.status(200).json({ card });
   } catch (error) {
     console.error("Error fetching card:", error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
+
+
+
+
+
 // Update Card
+// export const updatecard = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const { title, description, listId, position, assignedUsers, subtasks,dueDate } =
+//       req.body;
+
+//     if (!mongoose.Types.ObjectId.isValid(id)) {
+//       return res.status(400).json({ message: "Invalid Card ID" });
+//     }
+
+//     const card = await Card.findOne({ _id: id, deleted: false });
+//     if (!card) {
+//       return res.status(404).json({ message: "Card not found" });
+//     }
+
+//     const userObjectIds = [];
+//     if (assignedUsers && Array.isArray(assignedUsers)) {
+//       for (const email of assignedUsers) {
+//         const user = await User.findOne({ email });
+//         if (user) {
+//           userObjectIds.push(user._id);
+//         }
+//       }
+//     }
+
+//     if (listId && listId !== card.list.toString()) {
+//       const newList = await List.findById(listId);
+//       if (!newList) {
+//         return res.status(404).json({ message: "New list not found" });
+//       }
+
+//       await List.findByIdAndUpdate(card.list, { $pull: { cards: card._id } });
+//       newList.cards.splice(position || 0, 0, card._id);
+//       await newList.save();
+
+//       card.list = listId;
+//     }
+
+//     card.title = title || card.title;
+//     card.description = description || card.description;
+//     card.assignedUsers = userObjectIds;
+//     card.dueDate = dueDate || card.dueDate;
+
+//     if (subtasks && Array.isArray(subtasks)) {
+//       card.subtasks = subtasks.map((subtask) => ({
+//         ...subtask,
+//         completed: subtask.completed || false,
+//       }));
+//     }
+
+//     await card.save();
+
+//     return res.status(200).json({
+//       message: "Card updated successfully",
+//       card,
+//     });
+//   } catch (error) {
+//     console.error("Error updating card:", error);
+//     return res.status(500).json({ message: "Internal Server Error" });
+//   }
+// };
+
+
+// Update Card New Logic 
 export const updatecard = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, description, listId, position, assignedUsers, subtasks,dueDate } =
+    const { title, description, listId, position, assignedUsers, subtasks, dueDate } =
       req.body;
+
+    console.log("req.body", req.body);
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ message: "Invalid Card ID" });
@@ -632,16 +728,7 @@ export const updatecard = async (req, res) => {
       return res.status(404).json({ message: "Card not found" });
     }
 
-    const userObjectIds = [];
-    if (assignedUsers && Array.isArray(assignedUsers)) {
-      for (const email of assignedUsers) {
-        const user = await User.findOne({ email });
-        if (user) {
-          userObjectIds.push(user._id);
-        }
-      }
-    }
-
+    // Handle list change if provided
     if (listId && listId !== card.list.toString()) {
       const newList = await List.findById(listId);
       if (!newList) {
@@ -655,15 +742,28 @@ export const updatecard = async (req, res) => {
       card.list = listId;
     }
 
+    // Update card properties
     card.title = title || card.title;
     card.description = description || card.description;
-    card.assignedUsers = userObjectIds;
+
+    if (assignedUsers && Array.isArray(assignedUsers)) {
+      const validEmails = assignedUsers.filter(email =>
+        typeof email === "string" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+      );
+      card.assignedUsers = validEmails;
+    }
+
     card.dueDate = dueDate || card.dueDate;
 
+    // Update subtasks
     if (subtasks && Array.isArray(subtasks)) {
       card.subtasks = subtasks.map((subtask) => ({
         ...subtask,
         completed: subtask.completed || false,
+        assignedTo: subtask.assignedTo &&
+          /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(subtask.assignedTo)
+          ? subtask.assignedTo
+          : null,
       }));
     }
 
@@ -678,6 +778,17 @@ export const updatecard = async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+
+
+
+
+
+
+
+
+
+
 
 // Soft Delete Card
 export const deletecard = async (req, res) => {

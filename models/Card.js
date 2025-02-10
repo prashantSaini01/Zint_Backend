@@ -121,8 +121,8 @@ const cardSchema = new mongoose.Schema(
     },
     assignedUsers: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        // type: mongoose.Schema.Types.ObjectId,
+        type: String,
       },
     ],
     subtasks: [

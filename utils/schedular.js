@@ -9,7 +9,7 @@ const formatDate = () => {
     const now = new Date();
     const day = now.toLocaleDateString("en-US", { weekday: "long" }); // e.g., "Monday"
     const date = now.toLocaleDateString("en-US", { day: "2-digit", month: "2-digit", year: "numeric" }); // e.g., "01.03.2025"
-    return `${day} - ${date}`;
+    return `${date}`;
   };
   
   
@@ -24,6 +24,8 @@ const formatDate = () => {
   
       switch (frequency) {
         case 'weekly':
+          // For Testing Purpose
+          // cronExpressions.push(`*/1 * * * *`);
           cronExpressions.push(`0 9 * * ${frequencyDetails.day || 1}`);
           break;
         case 'biweekly':
@@ -60,16 +62,17 @@ const formatDate = () => {
           try {
             const currentDateSuffix = formatDate(); 
             const newCard = new Card({
-              title: `${scheduledCard.cardTitle} - ${currentDateSuffix}`,
+              title: `${scheduledCard.name} ${frequency} ${currentDateSuffix}`,
               description: scheduledCard.description,
               subtasks: scheduledCard.subtasks,
               list: scheduledCard.listId,
               board: scheduledCard.boardId,
-              position: 0
+              position: 0,
+              assignedUsers: scheduledCard.assignedUsers,
             });
   
             await newCard.save();
-            console.log(`Card created from scheduled card: ${scheduledCard.cardTitle}`);
+            console.log(`Card created from scheduled card: ${scheduledCard.name}`);
           } catch (error) {
             console.error('Error Creating Schedule', error);
           }
@@ -81,6 +84,6 @@ const formatDate = () => {
   
   export const startScheduler = () => {
     console.log("Starting scheduler...");
-    // scheduleCardCreation();
+    scheduleCardCreation();
   };
   
