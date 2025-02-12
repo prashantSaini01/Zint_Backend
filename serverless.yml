@@ -20,7 +20,7 @@ provider:
 
 
 functions:
-  app:y
+  app:
     handler: handler.handler
     events:
       - http:
