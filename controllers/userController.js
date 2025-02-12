@@ -1,5 +1,24 @@
 import User from '../models/User.js';
 
+
+// Update user profile picture
+
+export const updateUserProfilePic = async (req, res) => {
+  try {
+    if (!req.file) return res.status(400).json({ message: "No file uploaded." });
+
+    const imageUrl = req.file.location; // AWS S3 returns file location URL
+
+    // Update user profile in DB
+    await User.findByIdAndUpdate(req.user.id, { profilePicture: imageUrl });
+
+    res.status(200).json({ message: "Profile picture updated!", imageUrl });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
+  }
+};
+
+
 // Get current user profile
 export const getMe = async (req, res) => {
   try {

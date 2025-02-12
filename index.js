@@ -11,6 +11,7 @@ import scheduleRoute from './routes/scheduleRoute.js';
 import templateRoute from './routes/templateRoute.js';
 import validRoute from './routes/vaildRoute.js';
 import userRoute from './routes/userRoute.js';
+import uploadRoute from './routes/uploadRoute.js';
 // import { verifyJwt,verifyApiKey } from './middleware/authMiddleware.js';
 import { authenticate } from './middleware/authMiddleware.js';
 
@@ -54,7 +55,7 @@ app.use('/template', authenticate, templateRoute);
 app.use('/valid', validRoute);
 app.use('/list', authenticate, listRoute);
 app.use('/user', authenticate, userRoute);
-
+app.use('/upload',authenticate, uploadRoute);
 
 
 

@@ -13,6 +13,11 @@ provider:
     JWT_EXPIRES_IN: ${env:JWT_EXPIRES_IN}
     EMAIL_USER: ${env:EMAIL_USER}
     EMAIL_PASS: ${env:EMAIL_PASS}
+    AWS_ACCESS_KEY_ID: ${env:AWS_ACCESS_KEY_ID}
+    AWS_SECRET_ACCESS_KEY: ${env:AWS_SECRET_ACCESS_KEY}
+    AWS_REGION: ${env:AWS_REGION}
+    AWS_BUCKET_NAME: ${env:AWS_BUCKET_NAME}
+    
   timeout: 900
   logRetentionInDays: 90
 

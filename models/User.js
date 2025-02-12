@@ -7,6 +7,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Name is required'],
     },
+    profilePicture: {
+      type: String, // Stores the URL of the uploaded profile picture (AWS S3)
+      default: '', // Default value can be a placeholder image URL if needed
+    },
     email: {
       type: String,
       required: [true, 'Email is required'],
