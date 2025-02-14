@@ -5,6 +5,8 @@ import User from '../models/User.js';
 
 export const updateUserProfilePic = async (req, res) => {
   try {
+    // For Checking
+    console.log(req.body);
     if (!req.file) return res.status(400).json({ message: "No file uploaded." });
 
     const imageUrl = req.file.location; // AWS S3 returns file location URL
