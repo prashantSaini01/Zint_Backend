@@ -1,25 +1,67 @@
 import User from '../models/User.js';
 
+// backend/controllers/userController.js
+import { S3Client, PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
-// Update user profile picture
 
-export const updateUserProfilePic = async (req, res) => {
+const s3 = new S3Client({
+  region: process.env.AWS_REGION || 'ap-south-1',
+});
+
+export const getPresignedUrl = async (req, res) => {
   try {
-    // For Checking
-    console.log(req.body);
-    if (!req.file) return res.status(400).json({ message: "No file uploaded." });
+    const fileType = req.query.fileType;
+    
+    // Validate file type
+    if (!fileType.match(/^image\/(jpeg|png|gif)$/)) {
+      return res.status(400).json({ message: "Invalid file type" });
+    }
 
-    const imageUrl = req.file.location; // AWS S3 returns file location URL
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const extension = fileType.split('/')[1];
+    const key = `profile_pictures/${uniqueSuffix}.${extension}`;
 
-    // Update user profile in DB
-    await User.findByIdAndUpdate(req.user.id, { profilePicture: imageUrl });
+    const putCommand = new PutObjectCommand({
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: key,
+      ContentType: fileType,
+    });
 
-    res.status(200).json({ message: "Profile picture updated!", imageUrl });
+    const presignedUrl = await getSignedUrl(s3, putCommand, { expiresIn: 3600 });
+    
+    res.json({
+      uploadUrl: presignedUrl,
+      key: key,
+      fileType: fileType
+    });
   } catch (error) {
-    res.status(500).json({ message: "Server error", error });
+    console.error('Error generating presigned URL:', error);
+    res.status(500).json({ message: "Error generating upload URL" });
   }
 };
 
+export const updateUserProfilePic = async (req, res) => {
+  try {
+    const { key } = req.body;
+    
+    if (!key) {
+      return res.status(400).json({ message: "No file key provided" });
+    }
+
+    const imageUrl = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION || 'ap-south-1'}.amazonaws.com/${key}`;
+    
+    await User.findByIdAndUpdate(req.user.id, { profilePicture: imageUrl });
+
+    res.status(200).json({
+      message: "Profile picture updated!",
+      imageUrl
+    });
+  } catch (error) {
+    console.error('Error updating profile picture:', error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
 
 // Get current user profile
 export const getMe = async (req, res) => {
